@@ -10,16 +10,16 @@ export default class Link extends Command {
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
-    clipboard: Flags.boolean({ char: 'f', default: false, description: 'Copy to clipboard' }),
+    clipboard: Flags.boolean({ char: 'c', default: false, description: 'Copy to clipboard' }),
+    help: Flags.help({ char: 'h' }),
+    quiet: Flags.boolean({ char: 'q', description: 'Suppress output' }),
   }
 
   public async run(): Promise<void> {
     const { args, flags } = await this.parse(Link)
 
-    const name = flags.name ?? 'world'
-    this.log(`hello ${name} from /Users/drew.daniels/projects/jg/src/commands/link.ts`)
-    if (args.file && flags.force) {
-      this.log(`you input --force and --file: ${args.file}`)
+    if (args.id && flags.clipboard) {
+      this.log(`hello ${name} from /Users/drew.daniels/projects/jg/src/commands/link.ts`)
     }
   }
 }
