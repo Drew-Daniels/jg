@@ -22,9 +22,19 @@ export default class Link extends Command {
   public async run(): Promise<void> {
     const { args, flags } = await this.parse(Link)
 
-    const jiraIssueKey = await runCommand("git branch --show-current | cut -d / -f2- | cut -d / -f1 | tr -d '[:space:]' | tr a-z A-Z");
+    let jiraIssueKey;
 
-    // TODO: Enable passing jira issue id/key as argument instead of always getting from current branch name
+    if (args.id) {
+      // TODO: Allow for customization of this logic
+      if (/^EMR-\d{5,}$/.test(args.id)) {
+        jiraIssueKey = args.id
+      } else {
+        this.error(`Invalid Jira Issue ID: ${args.id}`)
+      }
+    } else {
+      jiraIssueKey = await runCommand("git branch --show-current | cut -d / -f2- | cut -d / -f1 | tr -d '[:space:]' | tr a-z A-Z");
+    }
+
     // TODO: Refactor logging to use shared strings
     if (flags.id) {
       if (flags.clipboard) {
