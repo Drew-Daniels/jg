@@ -2,8 +2,6 @@ import { Command, Flags } from '@oclif/core'
 
 import utils from '../../utils/index.js'
 
-const { getJiraIssueKeyFromCurrentBranch, pbcopy } = utils
-
 export default class Id extends Command {
   static override description = 'Returns Jira Issue ID from current Git branch'
 
@@ -24,11 +22,11 @@ export default class Id extends Command {
       this.error('Cannot use --quiet without --clipboard')
     }
 
-    const jiraIssueKey = await getJiraIssueKeyFromCurrentBranch()
+    const jiraIssueKey = await utils.getJiraIssueKeyFromCurrentBranch()
     const jiraIssueId = jiraIssueKey.split('-')[1]
 
     if (flags.clipboard) {
-      pbcopy(jiraIssueId)
+      utils.pbcopy(jiraIssueId)
       if (!flags.quiet) {
         this.log(`Copied Jira Issue ID to clipboard: ${jiraIssueId}`)
       }
