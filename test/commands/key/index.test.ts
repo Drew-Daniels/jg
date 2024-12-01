@@ -14,6 +14,6 @@ describe('key', () => {
   })
   it('runs key cmd', async () => {
     const { stdout } = await runCommand('key')
-    expect(stdout).to.contain('EMR-11111')
+    expect(stdout).to.equal('EMR-11111\n')
   })
 })
