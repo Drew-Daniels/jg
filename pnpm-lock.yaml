@@ -33,6 +33,9 @@ importers:
       '@types/node':
         specifier: ^18
         version: 18.19.67
+      '@types/sinon':
+        specifier: ^17.0.3
+        version: 17.0.3
       chai:
         specifier: ^4
         version: 4.5.0
@@ -60,9 +63,6 @@ importers:
       sinon:
         specifier: ^19.0.2
         version: 19.0.2
-      sinon-chai:
-        specifier: ^4.0.0
-        version: 4.0.0(chai@4.5.0)(sinon@19.0.2)
       ts-node:
         specifier: ^10
         version: 10.9.2(@types/node@18.19.67)(typescript@5.7.2)
@@ -720,6 +720,12 @@ packages:
 
   '@types/semver@7.5.8':
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
+
+  '@types/sinon@17.0.3':
+    resolution: {integrity: sha512-j3uovdn8ewky9kRBG19bOwaZbexJu/XjtkHyjvUgt4xfPFz18dcORIMqnYh66Fx3Powhcr85NT5+er3+oViapw==}
+
+  '@types/sinonjs__fake-timers@8.1.5':
+    resolution: {integrity: sha512-mQkU2jY8jJEF7YHjHvsQO8+3ughTL1mcnn96igfhONmR+fUPSKIkefQYpSe8bsly2Ep7oQbn/6VG5/9/0qcArQ==}
 
   '@types/wrap-ansi@3.0.0':
     resolution: {integrity: sha512-ltIpx+kM7g/MLRZfkbL7EsCEjfzCcScLpkg37eXEtx5kmrAKBkTJwd1GIAjDSL8wTpM6Hzn5YO4pSb91BEwu1g==}
@@ -2343,12 +2349,6 @@ packages:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
 
-  sinon-chai@4.0.0:
-    resolution: {integrity: sha512-cWqO7O2I4XfJDWyWElAQ9D/dtdh5Mo0RHndsfiiYyjWnlPzBJdIvjCVURO4EjyYaC3BjV+ISNXCfTXPXTEIEWA==}
-    peerDependencies:
-      chai: ^5.0.0
-      sinon: '>=4.0.0'
-
   sinon@19.0.2:
     resolution: {integrity: sha512-euuToqM+PjO4UgXeLETsfQiuoyPXlqFezr6YZDFwHR3t4qaX0fZUe1MfPMznTL5f8BWrVS89KduLdMUsxFCO6g==}
 
@@ -3889,6 +3889,12 @@ snapshots:
   '@types/normalize-package-data@2.4.4': {}
 
   '@types/semver@7.5.8': {}
+
+  '@types/sinon@17.0.3':
+    dependencies:
+      '@types/sinonjs__fake-timers': 8.1.5
+
+  '@types/sinonjs__fake-timers@8.1.5': {}
 
   '@types/wrap-ansi@3.0.0': {}
 
@@ -5636,11 +5642,6 @@ snapshots:
       object-inspect: 1.13.3
 
   signal-exit@4.1.0: {}
-
-  sinon-chai@4.0.0(chai@4.5.0)(sinon@19.0.2):
-    dependencies:
-      chai: 4.5.0
-      sinon: 19.0.2
 
   sinon@19.0.2:
     dependencies:
