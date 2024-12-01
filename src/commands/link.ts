@@ -24,6 +24,10 @@ export default class Link extends Command {
 
     let jiraIssueKey;
 
+    if (flags.id && flags.markdown) {
+      this.error('Cannot specify both --id and --markdown')
+    }
+
     if (args.id) {
       // TODO: Allow for customization of this logic
       if (/^EMR-\d{5,}$/.test(args.id)) {
@@ -47,25 +51,26 @@ export default class Link extends Command {
       } else {
         this.log(jiraIssueKey)
       }
-    } else if (flags.markdown) {
-      const markdownLink = `[${jiraIssueKey}](https://jira.atlassian.com/browse/${jiraIssueKey})`
-      if (flags.clipboard) {
-        await runCommand(`echo -n "${markdownLink}" | pbcopy`)
-        if (!flags.quiet) {
-          this.log(`Copied Jira Issue Markdown Link to clipboard: ${markdownLink}`)
-        }
-      } else {
-        this.log(`${markdownLink}`)
-      }
     } else {
-      const link = `https://jira.atlassian.com/browse/${jiraIssueKey}`
-      if (flags.clipboard) {
-        await runCommand(`echo -n "${link}" | pbcopy`)
+      // links
+      const jiraIssue = await runCommand(`jira open ${jiraIssueKey} -n | tr -d '\n'`)
+      if (flags.markdown) {
+        const markdownLink = `[${jiraIssueKey}](${jiraIssue})`
+        if (flags.clipboard) {
+          await runCommand(`echo -n "${markdownLink}" | pbcopy`)
+          if (!flags.quiet) {
+            this.log(`Copied Jira Issue Markdown Link to clipboard: ${markdownLink}`)
+          }
+        } else {
+          this.log(`${markdownLink}`)
+        }
+      } else if (flags.clipboard) {
+        await runCommand(`echo -n "${jiraIssue}" | pbcopy`)
         if (!flags.quiet) {
-          this.log(`Copied Jira Issue Link to clipboard: ${link}`)
+          this.log(`Copied Jira Issue jiraIssue to clipboard: ${jiraIssue}`)
         }
       } else {
-        this.log(`${link}`)
+        this.log(`${jiraIssue}`)
       }
     }
   }
