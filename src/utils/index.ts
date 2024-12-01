@@ -33,3 +33,7 @@ export async function getJiraIssueLink(identifier: string): Promise<string> {
   const link = await runCommand(`jira open ${identifier} -n | tr -d '\n'`)
   return link
 }
+
+export function getJiraIssueKeyFromCurrentBranch(): Promise<string> {
+  return runCommand('git branch --show-current | cut -d / -f2- | cut -d / -f1 | tr -d "[:space:]" | tr a-z A-Z')
+}

@@ -1,6 +1,6 @@
 import { Args, Command, Flags } from '@oclif/core'
 
-import { getJiraIssueLink, pbcopy, runCommand } from '../utils/index.js'
+import { getJiraIssueKeyFromCurrentBranch, getJiraIssueLink, pbcopy, runCommand } from '../utils/index.js'
 
 export default class Link extends Command {
   static override args = {
@@ -41,7 +41,7 @@ export default class Link extends Command {
         this.error(`Invalid Jira Issue ID: ${args.id}`)
       }
     } else {
-      jiraIssueKey = await runCommand("git branch --show-current | cut -d / -f2- | cut -d / -f1 | tr -d '[:space:]' | tr a-z A-Z");
+      jiraIssueKey = await getJiraIssueKeyFromCurrentBranch()
     }
 
     if (flags.id) {
