@@ -1,6 +1,8 @@
 import { Command, Flags } from '@oclif/core'
 
-import { getJiraIssueKeyFromCurrentBranch, pbcopy } from '../../utils/index.js'
+import utils from '../../utils/index.js'
+
+const { getJiraIssueKeyFromCurrentBranch, pbcopy } = utils
 
 export default class Key extends Command {
   static override description = 'Returns Jira Issue Key from current Git branch'

@@ -1,14 +1,21 @@
-import {runCommand} from '@oclif/test'
-import {expect} from 'chai'
+import { runCommand } from '@oclif/test'
+import { expect } from 'chai'
+import sinon from 'sinon'
 
-describe('key:index', () => {
-  it('runs key:index cmd', async () => {
-    const {stdout} = await runCommand('key:index')
-    expect(stdout).to.contain('hello world')
-  })
+import utils from '../../../src/utils/index.js'
 
-  it('runs key:index --name oclif', async () => {
-    const {stdout} = await runCommand('key:index --name oclif')
-    expect(stdout).to.contain('hello oclif')
+describe('key', () => {
+  it('runs key cmd', async () => {
+    const fakeUtils = {
+      async getJiraIssueKeyFromCurrentBranch() {
+        return 'EMR-11111';
+      },
+      pbcopy(data: string) { }
+    }
+    sinon.replace(utils, 'getJiraIssueKeyFromCurrentBranch', fakeUtils.getJiraIssueKeyFromCurrentBranch)
+    sinon.replace(utils, 'pbcopy', fakeUtils.pbcopy)
+
+    const { stdout } = await runCommand('key')
+    expect(stdout).to.contain('EMR-11111')
   })
 })

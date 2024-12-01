@@ -5,7 +5,7 @@ import sinon from 'sinon'
 import utils from '../../../src/utils/index.js'
 
 describe('id', () => {
-  it('runs id:index cmd', async () => {
+  it('runs id cmd', async () => {
     const fakeUtils = {
       async getJiraIssueKeyFromCurrentBranch() {
         return 'EMR-11111';
