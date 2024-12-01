@@ -14,7 +14,6 @@ export default class Link extends Command {
   static override flags = {
     clipboard: Flags.boolean({ char: 'c', default: false, description: 'Copy to clipboard' }),
     help: Flags.help({ char: 'h', description: 'Show help' }),
-    id: Flags.boolean({ char: 'i', description: 'Jira Issue ID' }),
     markdown: Flags.boolean({ char: 'm', description: 'Get Markdown Link to Jira Issue' }),
     quiet: Flags.boolean({ char: 'q', description: 'Suppress output' }),
   }
@@ -25,10 +24,6 @@ export default class Link extends Command {
     const { args, flags } = await this.parse(Link)
 
     let jiraIssueKey;
-
-    if (flags.id && flags.markdown) {
-      this.error('Cannot specify both --id and --markdown')
-    }
 
     if (args.id) {
       if (new RegExp(`^${this.PREFIX}-\\d{5,}$`).test(args.id)) {
@@ -44,36 +39,25 @@ export default class Link extends Command {
       jiraIssueKey = await getJiraIssueKeyFromCurrentBranch()
     }
 
-    if (flags.id) {
+    // links
+    const jiraIssue = await getJiraIssueLink(jiraIssueKey)
+    if (flags.markdown) {
+      const markdownLink = `[${jiraIssueKey}](${jiraIssue})`
       if (flags.clipboard) {
-        pbcopy(jiraIssueKey)
+        pbcopy(markdownLink)
         if (!flags.quiet) {
-          this.log(`Copied Jira Issue Key to clipboard: ${jiraIssueKey}`)
+          this.log(`Copied Jira Issue Markdown Link to clipboard: ${markdownLink}`)
         }
       } else {
-        this.log(jiraIssueKey)
+        this.log(`${markdownLink}`)
+      }
+    } else if (flags.clipboard) {
+      pbcopy(jiraIssue)
+      if (!flags.quiet) {
+        this.log(`Copied Jira Issue to clipboard: ${jiraIssue}`)
       }
     } else {
-      // links
-      const jiraIssue = await getJiraIssueLink(jiraIssueKey)
-      if (flags.markdown) {
-        const markdownLink = `[${jiraIssueKey}](${jiraIssue})`
-        if (flags.clipboard) {
-          pbcopy(markdownLink)
-          if (!flags.quiet) {
-            this.log(`Copied Jira Issue Markdown Link to clipboard: ${markdownLink}`)
-          }
-        } else {
-          this.log(`${markdownLink}`)
-        }
-      } else if (flags.clipboard) {
-        pbcopy(jiraIssue)
-        if (!flags.quiet) {
-          this.log(`Copied Jira Issue to clipboard: ${jiraIssue}`)
-        }
-      } else {
-        this.log(`${jiraIssue}`)
-      }
+      this.log(`${jiraIssue}`)
     }
   }
 }
