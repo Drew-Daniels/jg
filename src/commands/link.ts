@@ -19,6 +19,8 @@ export default class Link extends Command {
     quiet: Flags.boolean({ char: 'q', description: 'Suppress output' }),
   }
 
+  readonly PREFIX = 'EMR'
+
   public async run(): Promise<void> {
     const { args, flags } = await this.parse(Link)
 
@@ -29,11 +31,12 @@ export default class Link extends Command {
     }
 
     if (args.id) {
-      // TODO: Allow for customization of this logic
-      if (/^EMR-\d{5,}$/.test(args.id)) {
+      if (new RegExp(`^${this.PREFIX}-\\d{5,}$`).test(args.id)) {
+        // Full Jira Issue Key specified, no changes necessary
         jiraIssueKey = args.id
-      } else if (/\d{5,}$/.test(args.id)) {
-        jiraIssueKey = `EMR-${args.id}`
+      } else if (/^\d{5,}$/.test(args.id)) {
+        // Only Jira Issue ID specified, add prefix
+        jiraIssueKey = `${this.PREFIX}-${args.id}`
       } else {
         this.error(`Invalid Jira Issue ID: ${args.id}`)
       }
@@ -41,7 +44,6 @@ export default class Link extends Command {
       jiraIssueKey = await runCommand("git branch --show-current | cut -d / -f2- | cut -d / -f1 | tr -d '[:space:]' | tr a-z A-Z");
     }
 
-    // TODO: Refactor logging to use shared strings
     if (flags.id) {
       if (flags.clipboard) {
         await runCommand(`echo -n ${jiraIssueKey} | pbcopy`)
