@@ -27,6 +27,6 @@ after(() => {
 describe('link', () => {
   it('runs link cmd', async () => {
     const { stdout } = await runCommand('link')
-    expect(stdout).to.contain('https://jira.atlassian.com/browse/EMR-11111')
+    expect(stdout).to.equal('https://jira.atlassian.com/browse/EMR-11111\n')
   })
 })
