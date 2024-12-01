@@ -1,6 +1,6 @@
 import { Args, Command, Flags } from '@oclif/core'
 
-import { runCommand } from '../utils/index.js'
+import { pbcopy, runCommand } from '../utils/index.js'
 
 export default class Link extends Command {
   static override args = {
@@ -46,7 +46,7 @@ export default class Link extends Command {
 
     if (flags.id) {
       if (flags.clipboard) {
-        await runCommand(`echo -n ${jiraIssueKey} | pbcopy`)
+        pbcopy(jiraIssueKey)
         if (!flags.quiet) {
           this.log(`Copied Jira Issue Key to clipboard: ${jiraIssueKey}`)
         }
@@ -59,7 +59,7 @@ export default class Link extends Command {
       if (flags.markdown) {
         const markdownLink = `[${jiraIssueKey}](${jiraIssue})`
         if (flags.clipboard) {
-          await runCommand(`echo -n "${markdownLink}" | pbcopy`)
+          pbcopy(markdownLink)
           if (!flags.quiet) {
             this.log(`Copied Jira Issue Markdown Link to clipboard: ${markdownLink}`)
           }
@@ -67,7 +67,7 @@ export default class Link extends Command {
           this.log(`${markdownLink}`)
         }
       } else if (flags.clipboard) {
-        await runCommand(`echo -n "${jiraIssue}" | pbcopy`)
+        pbcopy(jiraIssue)
         if (!flags.quiet) {
           this.log(`Copied Jira Issue jiraIssue to clipboard: ${jiraIssue}`)
         }

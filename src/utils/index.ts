@@ -17,3 +17,10 @@ export function runCommand(cmd: string, args: string[] = []): Promise<string> {
     })
   })
 }
+
+// https://stackoverflow.com/a/13735363/13175926
+export function pbcopy(data: string) {
+  const proc = spawn('pbcopy')
+  proc.stdin.write(data)
+  proc.stdin.end()
+}
