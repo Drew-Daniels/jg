@@ -10,7 +10,7 @@ describe('key', () => {
       async getJiraIssueKeyFromCurrentBranch() {
         return 'EMR-11111';
       },
-      pbcopy(data: string) { }
+      pbcopy() { }
     }
     sinon.replace(utils, 'getJiraIssueKeyFromCurrentBranch', fakeUtils.getJiraIssueKeyFromCurrentBranch)
     sinon.replace(utils, 'pbcopy', fakeUtils.pbcopy)

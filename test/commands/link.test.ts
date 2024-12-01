@@ -1,14 +1,25 @@
-import {runCommand} from '@oclif/test'
-import {expect} from 'chai'
+import { runCommand } from '@oclif/test'
+import { expect } from 'chai'
+import sinon from 'sinon'
+
+import utils from '../../src/utils/index.js'
 
 describe('link', () => {
   it('runs link cmd', async () => {
-    const {stdout} = await runCommand('link')
-    expect(stdout).to.contain('hello world')
-  })
+    const fakeUtils = {
+      async getJiraIssueKeyFromCurrentBranch() {
+        return 'EMR-11111';
+      },
+      async getJiraIssueLink() {
+        return 'https://jira.atlassian.com/browse/EMR-11111';
+      },
+      pbcopy() { }
+    }
+    sinon.replace(utils, 'getJiraIssueKeyFromCurrentBranch', fakeUtils.getJiraIssueKeyFromCurrentBranch)
+    sinon.replace(utils, 'getJiraIssueLink', fakeUtils.getJiraIssueLink)
+    sinon.replace(utils, 'pbcopy', fakeUtils.pbcopy)
 
-  it('runs link --name oclif', async () => {
-    const {stdout} = await runCommand('link --name oclif')
-    expect(stdout).to.contain('hello oclif')
+    const { stdout } = await runCommand('link')
+    expect(stdout).to.contain('https://jira.atlassian.com/browse/EMR-11111')
   })
 })
