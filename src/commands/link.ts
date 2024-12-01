@@ -13,14 +13,48 @@ export default class Link extends Command {
 
   static override flags = {
     clipboard: Flags.boolean({ char: 'c', default: false, description: 'Copy to clipboard' }),
-    help: Flags.help({ char: 'h' }),
+    help: Flags.help({ char: 'h', description: 'Show help' }),
+    id: Flags.boolean({ char: 'i', description: 'Jira Issue ID' }),
+    markdown: Flags.boolean({ char: 'm', description: 'Get Markdown Link to Jira Issue' }),
     quiet: Flags.boolean({ char: 'q', description: 'Suppress output' }),
   }
 
   public async run(): Promise<void> {
     const { args, flags } = await this.parse(Link)
 
-    const branch = await runCommand('git branch', ['--show-current']) as string;
-    console.log('branch:', branch)
+    const jiraIssueKey = await runCommand("git branch --show-current | cut -d / -f2- | cut -d / -f1 | tr -d '[:space:]' | tr a-z A-Z");
+
+    // TODO: Enable passing jira issue id/key as argument instead of always getting from current branch name
+    // TODO: Refactor logging to use shared strings
+    if (flags.id) {
+      if (flags.clipboard) {
+        await runCommand(`echo -n ${jiraIssueKey} | pbcopy`)
+        if (!flags.quiet) {
+          this.log(`Copied Jira Issue Key to clipboard: ${jiraIssueKey}`)
+        }
+      } else {
+        this.log(jiraIssueKey)
+      }
+    } else if (flags.markdown) {
+      const markdownLink = `[${jiraIssueKey}](https://jira.atlassian.com/browse/${jiraIssueKey})`
+      if (flags.clipboard) {
+        await runCommand(`echo -n "${markdownLink}" | pbcopy`)
+        if (!flags.quiet) {
+          this.log(`Copied Jira Issue Markdown Link to clipboard: ${markdownLink}`)
+        }
+      } else {
+        this.log(`${markdownLink}`)
+      }
+    } else {
+      const link = `https://jira.atlassian.com/browse/${jiraIssueKey}`
+      if (flags.clipboard) {
+        await runCommand(`echo -n "${link}" | pbcopy`)
+        if (!flags.quiet) {
+          this.log(`Copied Jira Issue Link to clipboard: ${link}`)
+        }
+      } else {
+        this.log(`${link}`)
+      }
+    }
   }
 }
