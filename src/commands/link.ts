@@ -69,7 +69,7 @@ export default class Link extends Command {
       } else if (flags.clipboard) {
         pbcopy(jiraIssue)
         if (!flags.quiet) {
-          this.log(`Copied Jira Issue jiraIssue to clipboard: ${jiraIssue}`)
+          this.log(`Copied Jira Issue to clipboard: ${jiraIssue}`)
         }
       } else {
         this.log(`${jiraIssue}`)
