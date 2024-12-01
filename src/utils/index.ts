@@ -1,4 +1,14 @@
+import { Version3Client } from "jira.js";
 import { spawn } from 'node:child_process'
+
+const client = new Version3Client({
+  authentication: {
+    oauth2: {
+      accessToken: process.env.JIRA_API_TOKEN as string
+    }
+  },
+  host: process.env.JIRA_API_HOSTNAME as string
+});
 
 export default {
   fetchIssue,
