@@ -5,20 +5,16 @@ import sinon from 'sinon'
 import utils from '../../src/utils/index.js'
 
 describe('link', () => {
-  it('runs link cmd', async () => {
-    const fakeUtils = {
-      async getJiraIssueKeyFromCurrentBranch() {
-        return 'EMR-11111';
-      },
-      async getJiraIssueLink() {
-        return 'https://jira.atlassian.com/browse/EMR-11111';
-      },
-      pbcopy() { }
-    }
-    sinon.replace(utils, 'getJiraIssueKeyFromCurrentBranch', fakeUtils.getJiraIssueKeyFromCurrentBranch)
-    sinon.replace(utils, 'getJiraIssueLink', fakeUtils.getJiraIssueLink)
-    sinon.replace(utils, 'pbcopy', fakeUtils.pbcopy)
+  beforeEach(() => {
+    sinon.stub(utils, 'getJiraIssueKeyFromCurrentBranch').resolves('EMR-11111')
+    sinon.stub(utils, 'getJiraIssueLink').resolves('https://jira.atlassian.com/browse/EMR-11111')
+    sinon.stub(utils, 'pbcopy')
+  })
+  afterEach(() => {
+    sinon.restore()
+  })
 
+  it('runs link cmd', async () => {
     const { stdout } = await runCommand('link')
     expect(stdout).to.contain('https://jira.atlassian.com/browse/EMR-11111')
   })
