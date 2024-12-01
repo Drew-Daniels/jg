@@ -1,4 +1,5 @@
 import { Args, Command, Flags } from '@oclif/core'
+import { spawn } from 'node:child_process'
 
 export default class Link extends Command {
   static override args = {
@@ -18,8 +19,10 @@ export default class Link extends Command {
   public async run(): Promise<void> {
     const { args, flags } = await this.parse(Link)
 
-    if (args.id && flags.clipboard) {
-      this.log(`hello ${name} from /Users/drew.daniels/projects/jg/src/commands/link.ts`)
-    }
+    const cmd = spawn('git branch --show-current', { shell: true, stdio: 'inherit' })
+
+    cmd.stdout?.on('data', (data: unknown) => {
+      console.log(data?.toString())
+    })
   }
 }
