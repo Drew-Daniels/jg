@@ -12,6 +12,7 @@ describe('key', () => {
   afterEach(() => {
     sinon.restore()
   })
+
   it('runs key cmd', async () => {
     const { stdout } = await runCommand('key')
     expect(stdout).to.equal('EMR-11111\n')
