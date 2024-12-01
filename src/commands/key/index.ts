@@ -20,7 +20,12 @@ export default class Key extends Command {
   public async run(): Promise<void> {
     const { flags } = await this.parse(Key)
 
+    if (flags.quiet && !flags.clipboard) {
+      this.error('Cannot use --quiet without --clipboard')
+    }
+
     const jiraIssueKey = await getJiraIssueKeyFromCurrentBranch()
+
     if (flags.clipboard) {
       pbcopy(jiraIssueKey)
       if (!flags.quiet) {

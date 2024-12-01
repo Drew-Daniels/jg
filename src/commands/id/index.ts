@@ -20,12 +20,12 @@ export default class Id extends Command {
   public async run(): Promise<void> {
     const { flags } = await this.parse(Id)
 
-    const jiraIssueKey = await getJiraIssueKeyFromCurrentBranch()
-    const jiraIssueId = jiraIssueKey.split('-')[1]
-
     if (flags.quiet && !flags.clipboard) {
       this.error('Cannot use --quiet without --clipboard')
     }
+
+    const jiraIssueKey = await getJiraIssueKeyFromCurrentBranch()
+    const jiraIssueId = jiraIssueKey.split('-')[1]
 
     if (flags.clipboard) {
       pbcopy(jiraIssueId)
