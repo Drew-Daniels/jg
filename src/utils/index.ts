@@ -24,3 +24,12 @@ export function pbcopy(data: string) {
   proc.stdin.write(data)
   proc.stdin.end()
 }
+
+/**
+ * @param identifier - Jira Issue ID or Key
+ * @returns Jira Issue Link
+ */
+export async function getJiraIssueLink(identifier: string): Promise<string> {
+  const link = await runCommand(`jira open ${identifier} -n | tr -d '\n'`)
+  return link
+}

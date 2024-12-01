@@ -1,6 +1,6 @@
 import { Args, Command, Flags } from '@oclif/core'
 
-import { pbcopy, runCommand } from '../utils/index.js'
+import { getJiraIssueLink, pbcopy, runCommand } from '../utils/index.js'
 
 export default class Link extends Command {
   static override args = {
@@ -55,7 +55,7 @@ export default class Link extends Command {
       }
     } else {
       // links
-      const jiraIssue = await runCommand(`jira open ${jiraIssueKey} -n | tr -d '\n'`)
+      const jiraIssue = await getJiraIssueLink(jiraIssueKey)
       if (flags.markdown) {
         const markdownLink = `[${jiraIssueKey}](${jiraIssue})`
         if (flags.clipboard) {
