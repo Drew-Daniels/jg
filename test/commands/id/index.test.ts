@@ -9,13 +9,20 @@ describe('id', () => {
     sinon.stub(utils, 'getJiraIssueKeyFromCurrentBranch').resolves('EMR-54321')
     sinon.stub(utils, 'pbcopy')
   })
-
-  it('just prints Jira Issue ID when no options are passed', async () => {
-    const { stdout } = await runCommand('id')
-    expect(stdout).to.equal('54321\n')
+  describe('when no options are passed', () => {
+    it('prints the Jira Issue ID', async () => {
+      const { stdout } = await runCommand('id')
+      expect(stdout).to.equal('54321\n')
+    })
   })
-  it('copies Jira Issue ID to clipboard when --clipboard is passed', async () => {
-    const { stdout } = await runCommand('id --clipboard')
-    expect(stdout).to.equal('Copied Jira Issue Key to clipboard: 54321\n')
+  describe('when options are passed', () => {
+    it('--clipboard prints the Jira Issue ID and copies it to the clipboard', async () => {
+      const { stdout } = await runCommand('id --clipboard')
+      expect(stdout).to.equal('Copied Jira Issue Key to clipboard: 54321\n')
+    })
+    it('--help prints the help', async () => {
+      const { stdout } = await runCommand('id --help')
+      expect(stdout).to.contain('Returns Jira Issue ID from current Git branch')
+    })
   })
 })
