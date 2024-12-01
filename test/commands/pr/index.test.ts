@@ -1,14 +1,9 @@
-import {runCommand} from '@oclif/test'
-import {expect} from 'chai'
+import { runCommand } from '@oclif/test'
+import { expect } from 'chai'
 
-describe('pr:index', () => {
-  it('runs pr:index cmd', async () => {
-    const {stdout} = await runCommand('pr:index')
+describe('pr', () => {
+  it('runs pr cmd', async () => {
+    const { stdout } = await runCommand('pr')
     expect(stdout).to.contain('hello world')
-  })
-
-  it('runs pr:index --name oclif', async () => {
-    const {stdout} = await runCommand('pr:index --name oclif')
-    expect(stdout).to.contain('hello oclif')
   })
 })
