@@ -10,8 +10,12 @@ describe('id', () => {
     sinon.stub(utils, 'pbcopy')
   })
 
-  it('runs id cmd', async () => {
+  it('just prints Jira Issue ID when no options are passed', async () => {
     const { stdout } = await runCommand('id')
     expect(stdout).to.equal('54321\n')
+  })
+  it('copies Jira Issue ID to clipboard when --clipboard is passed', async () => {
+    const { stdout } = await runCommand('id --clipboard')
+    expect(stdout).to.equal('Copied Jira Issue Key to clipboard: 54321\n')
   })
 })
