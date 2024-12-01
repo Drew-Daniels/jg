@@ -28,6 +28,8 @@ export default class Link extends Command {
       // TODO: Allow for customization of this logic
       if (/^EMR-\d{5,}$/.test(args.id)) {
         jiraIssueKey = args.id
+      } else if (/\d{5,}$/.test(args.id)) {
+        jiraIssueKey = `EMR-${args.id}`
       } else {
         this.error(`Invalid Jira Issue ID: ${args.id}`)
       }
