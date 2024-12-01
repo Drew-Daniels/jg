@@ -1,13 +1,21 @@
 import { Version3Client } from "jira.js";
 import { spawn } from 'node:child_process'
 
+if (!process.env.JIRA_API_TOKEN) {
+  throw new Error('Missing JIRA_API_TOKEN')
+}
+
+if (!process.env.JIRA_API_HOSTNAME) {
+  throw new Error('Missing JIRA_API_HOSTNAME')
+}
+
 const client = new Version3Client({
   authentication: {
     oauth2: {
-      accessToken: process.env.JIRA_API_TOKEN as string
+      accessToken: process.env.JIRA_API_TOKEN
     }
   },
-  host: process.env.JIRA_API_HOSTNAME as string
+  host: process.env.JIRA_API_HOSTNAME
 });
 
 export default {
