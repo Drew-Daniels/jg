@@ -25,10 +25,19 @@ describe('link', () => {
       expect(pbcopyStub.calledOnce).to.be.true
       expect(stdout).to.equal('Copied Jira Issue Link to clipboard: https://jira.atlassian.com/browse/EMR-11111\n')
     })
-    it('--clipboard && --quiet copies the Jira Issue Link to the clipboard and suppresses output', async () => {
+    it('--clipboard & --quiet copies the Jira Issue Link to the clipboard and suppresses output', async () => {
       const { stdout } = await runCommand('link --quiet --clipboard')
       expect(pbcopyStub.calledOnce).to.be.true
       expect(stdout).to.equal('')
+    })
+    it('--markdown prints the Jira Issue Markdown Link', async () => {
+      const { stdout } = await runCommand('link --markdown')
+      expect(stdout).to.equal('[EMR-11111](https://jira.atlassian.com/browse/EMR-11111)\n')
+    })
+    it('--clipboard & --markdown prints the Jira Issue Markdown Link and copies it to the clipboard', async () => {
+      const { stdout } = await runCommand('link --markdown --clipboard')
+      expect(pbcopyStub.calledOnce).to.be.true
+      expect(stdout).to.equal('Copied Jira Issue Markdown Link to clipboard: [EMR-11111](https://jira.atlassian.com/browse/EMR-11111)\n')
     })
     it('--quiet without --clipboard throws an error', async () => {
       const { error } = await runCommand('link --quiet')
