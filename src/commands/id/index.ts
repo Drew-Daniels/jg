@@ -3,7 +3,7 @@ import { Command, Flags } from '@oclif/core'
 import { getJiraIssueKeyFromCurrentBranch, pbcopy } from '../../utils/index.js'
 
 export default class Id extends Command {
-  static override description = 'Returns Jira Issue ID'
+  static override description = 'Returns Jira Issue ID from current Git branch'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',

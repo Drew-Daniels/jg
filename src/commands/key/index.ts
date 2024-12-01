@@ -1,30 +1,31 @@
-import {Args, Command, Flags} from '@oclif/core'
+import { Command, Flags } from '@oclif/core'
 
-export default class KeyIndex extends Command {
-  static override args = {
-    file: Args.string({description: 'file to read'}),
-  }
+import { getJiraIssueKeyFromCurrentBranch, pbcopy } from '../../utils/index.js'
 
-  static override description = 'describe the command here'
+export default class Key extends Command {
+  static override description = 'Returns Jira Issue Key from current Git branch'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
   ]
 
   static override flags = {
-    // flag with no value (-f, --force)
-    force: Flags.boolean({char: 'f'}),
-    // flag with a value (-n, --name=VALUE)
-    name: Flags.string({char: 'n', description: 'name to print'}),
+    clipboard: Flags.boolean({ char: 'c', default: false, description: 'Copy to clipboard' }),
+    help: Flags.help({ char: 'h', description: 'Show help' }),
+    quiet: Flags.boolean({ char: 'q', description: 'Suppress output' }),
   }
 
   public async run(): Promise<void> {
-    const {args, flags} = await this.parse(KeyIndex)
+    const { flags } = await this.parse(Key)
 
-    const name = flags.name ?? 'world'
-    this.log(`hello ${name} from /Users/drew.daniels/projects/jg/src/commands/key/index.ts`)
-    if (args.file && flags.force) {
-      this.log(`you input --force and --file: ${args.file}`)
+    const jiraIssueKey = await getJiraIssueKeyFromCurrentBranch()
+    if (flags.clipboard) {
+      pbcopy(jiraIssueKey)
+      if (!flags.quiet) {
+        this.log(`Copied Jira Issue Key to clipboard: ${jiraIssueKey}`)
+      }
+    } else {
+      this.log(jiraIssueKey)
     }
   }
 }
