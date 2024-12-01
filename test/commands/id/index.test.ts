@@ -20,6 +20,14 @@ describe('id', () => {
       const { stdout } = await runCommand('id --clipboard')
       expect(stdout).to.equal('Copied Jira Issue Key to clipboard: 54321\n')
     })
+    it('--clipboard && --quiet copies the Jira Issue ID to the clipboard and suppresses output', async () => {
+      const { stdout } = await runCommand('id --quiet --clipboard')
+      expect(stdout).to.equal('')
+    })
+    it('--quiet without --clipboard throws an error', async () => {
+      const { error } = await runCommand('id --quiet')
+      expect(error?.message).to.contain('Cannot use --quiet without --clipboard')
+    })
     it('--help prints the help', async () => {
       const { stdout } = await runCommand('id --help')
       expect(stdout).to.contain('Returns Jira Issue ID from current Git branch')

@@ -23,6 +23,10 @@ export default class Id extends Command {
     const jiraIssueKey = await getJiraIssueKeyFromCurrentBranch()
     const jiraIssueId = jiraIssueKey.split('-')[1]
 
+    if (flags.quiet && !flags.clipboard) {
+      this.error('Cannot use --quiet without --clipboard')
+    }
+
     if (flags.clipboard) {
       pbcopy(jiraIssueId)
       if (!flags.quiet) {
