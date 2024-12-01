@@ -3,6 +3,7 @@ import { spawn } from 'node:child_process'
 export default {
   getJiraIssueKeyFromCurrentBranch,
   getJiraIssueLink,
+  getLatestPrForJiraIssue,
   pbcopy,
   runShellCmd
 }
@@ -52,4 +53,9 @@ async function getJiraIssueKeyFromCurrentBranch(): Promise<string> {
   }
 
   return jiraIssueId
+}
+
+async function getLatestPrForJiraIssue(jiraIssueId: string): Promise<string> {
+  const pr = await runShellCmd(`gh search prs ${jiraIssueId} --assignee="@me" --json=number,title,url --match=title --limit=1 | jq -r '.[0] | [.number, .url] | join(" ")'`)
+  return pr
 }
