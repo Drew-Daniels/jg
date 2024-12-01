@@ -18,7 +18,7 @@ describe('id', () => {
   describe('when options are passed', () => {
     it('--clipboard prints the Jira Issue ID and copies it to the clipboard', async () => {
       const { stdout } = await runCommand('id --clipboard')
-      expect(stdout).to.equal('Copied Jira Issue Key to clipboard: 54321\n')
+      expect(stdout).to.equal('Copied Jira Issue ID to clipboard: 54321\n')
     })
     it('--clipboard && --quiet copies the Jira Issue ID to the clipboard and suppresses output', async () => {
       const { stdout } = await runCommand('id --quiet --clipboard')

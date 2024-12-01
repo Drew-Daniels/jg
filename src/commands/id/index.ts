@@ -30,7 +30,7 @@ export default class Id extends Command {
     if (flags.clipboard) {
       pbcopy(jiraIssueId)
       if (!flags.quiet) {
-        this.log(`Copied Jira Issue Key to clipboard: ${jiraIssueId}`)
+        this.log(`Copied Jira Issue ID to clipboard: ${jiraIssueId}`)
       }
     } else {
       this.log(jiraIssueId)
