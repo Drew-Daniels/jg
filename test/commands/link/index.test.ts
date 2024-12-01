@@ -10,9 +10,6 @@ describe('link', () => {
     sinon.stub(utils, 'getJiraIssueLink').resolves('https://jira.atlassian.com/browse/EMR-11111')
     sinon.stub(utils, 'pbcopy')
   })
-  afterEach(() => {
-    sinon.restore()
-  })
 
   it('runs link cmd', async () => {
     const { stdout } = await runCommand('link')

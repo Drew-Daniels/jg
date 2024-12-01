@@ -9,9 +9,6 @@ describe('id', () => {
     sinon.stub(utils, 'getJiraIssueKeyFromCurrentBranch').resolves('EMR-11111')
     sinon.stub(utils, 'pbcopy')
   })
-  afterEach(() => {
-    sinon.restore()
-  })
 
   it('runs id cmd', async () => {
     const { stdout } = await runCommand('id')
