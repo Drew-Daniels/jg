@@ -1,6 +1,8 @@
 import { Args, Command, Flags } from '@oclif/core'
 
-import { getJiraIssueKeyFromCurrentBranch, getJiraIssueLink, pbcopy } from '../utils/index.js'
+import utils from '../utils/index.js'
+
+const { getJiraIssueKeyFromCurrentBranch, getJiraIssueLink, pbcopy } = utils
 
 export default class Link extends Command {
   static override args = {
