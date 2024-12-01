@@ -68,7 +68,7 @@
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "pnpm run lint",
     "prepack": "oclif manifest && oclif readme",
-    "test": "mocha --require mocha-hooks.js --forbid-only \"test/**/*.test.ts\"",
+    "test": "mocha --require mocha-hooks.js --forbid-only \"test/**/*.test.ts\" --parallel",
     "version": "oclif readme && git add README.md"
   },
   "types": "dist/index.d.ts"
