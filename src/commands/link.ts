@@ -4,10 +4,10 @@ import { runCommand } from '../utils/index.js'
 
 export default class Link extends Command {
   static override args = {
-    id: Args.string({ description: 'Jira Issue ID' }),
+    id: Args.string({ description: 'Jira Issue ID or Key' }),
   }
 
-  static override description = 'Copies Jira Issue Link'
+  static override description = 'Copies Jira Issue ID, Markdown Link, or Link to clipboard'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
