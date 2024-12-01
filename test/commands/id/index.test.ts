@@ -15,6 +15,6 @@ describe('id', () => {
 
   it('runs id cmd', async () => {
     const { stdout } = await runCommand('id')
-    expect(stdout).to.contain('EMR-11111')
+    expect(stdout).to.equal('11111\n')
   })
 })

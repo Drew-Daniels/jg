@@ -21,13 +21,15 @@ export default class Id extends Command {
     const { flags } = await this.parse(Id)
 
     const jiraIssueKey = await getJiraIssueKeyFromCurrentBranch()
+    const jiraIssueId = jiraIssueKey.split('-')[1]
+
     if (flags.clipboard) {
-      pbcopy(jiraIssueKey)
+      pbcopy(jiraIssueId)
       if (!flags.quiet) {
-        this.log(`Copied Jira Issue Key to clipboard: ${jiraIssueKey}`)
+        this.log(`Copied Jira Issue Key to clipboard: ${jiraIssueId}`)
       }
     } else {
-      this.log(jiraIssueKey)
+      this.log(jiraIssueId)
     }
   }
 }
