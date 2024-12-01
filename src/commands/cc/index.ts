@@ -1,8 +1,8 @@
-import {Args, Command, Flags} from '@oclif/core'
+import { Args, Command, Flags } from '@oclif/core'
 
-export default class CcIndex extends Command {
+export default class Cc extends Command {
   static override args = {
-    file: Args.string({description: 'file to read'}),
+    file: Args.string({ description: 'file to read' }),
   }
 
   static override description = 'describe the command here'
@@ -13,13 +13,13 @@ export default class CcIndex extends Command {
 
   static override flags = {
     // flag with no value (-f, --force)
-    force: Flags.boolean({char: 'f'}),
+    force: Flags.boolean({ char: 'f' }),
     // flag with a value (-n, --name=VALUE)
-    name: Flags.string({char: 'n', description: 'name to print'}),
+    name: Flags.string({ char: 'n', description: 'name to print' }),
   }
 
   public async run(): Promise<void> {
-    const {args, flags} = await this.parse(CcIndex)
+    const { args, flags } = await this.parse(Cc)
 
     const name = flags.name ?? 'world'
     this.log(`hello ${name} from /Users/drew.daniels/projects/jg/src/commands/cc/index.ts`)
