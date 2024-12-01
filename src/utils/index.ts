@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process'
 
-export function runCommand(cmd: string, args: string[] = []): Promise<string> {
+export function runShellCmd(cmd: string, args: string[] = []): Promise<string> {
   return new Promise((resolve, reject) => {
     const child = spawn(cmd, args, { shell: true, stdio: 'pipe' })
 
@@ -30,10 +30,10 @@ export function pbcopy(data: string) {
  * @returns Jira Issue Link
  */
 export async function getJiraIssueLink(identifier: string): Promise<string> {
-  const link = await runCommand(`jira open ${identifier} -n | tr -d '\n'`)
+  const link = await runShellCmd(`jira open ${identifier} -n | tr -d '\n'`)
   return link
 }
 
 export function getJiraIssueKeyFromCurrentBranch(): Promise<string> {
-  return runCommand('git branch --show-current | cut -d / -f2- | cut -d / -f1 | tr -d "[:space:]" | tr a-z A-Z')
+  return runShellCmd('git branch --show-current | cut -d / -f2- | cut -d / -f1 | tr -d "[:space:]" | tr a-z A-Z')
 }
