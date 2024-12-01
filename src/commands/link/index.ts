@@ -2,8 +2,6 @@ import { Args, Command, Flags } from '@oclif/core'
 
 import utils from '../../utils/index.js'
 
-const { getJiraIssueKeyFromCurrentBranch, getJiraIssueLink, pbcopy } = utils
-
 export default class Link extends Command {
   static override args = {
     id: Args.string({ description: 'Jira Issue ID or Key' }),
@@ -25,6 +23,10 @@ export default class Link extends Command {
   public async run(): Promise<void> {
     const { args, flags } = await this.parse(Link)
 
+    if (flags.quiet && !flags.clipboard) {
+      this.error('Cannot use --quiet without --clipboard')
+    }
+
     let jiraIssueKey;
 
     if (args.id) {
@@ -38,15 +40,15 @@ export default class Link extends Command {
         this.error(`Invalid Jira Issue ID: ${args.id}`)
       }
     } else {
-      jiraIssueKey = await getJiraIssueKeyFromCurrentBranch()
+      jiraIssueKey = await utils.getJiraIssueKeyFromCurrentBranch()
     }
 
     // links
-    const jiraIssue = await getJiraIssueLink(jiraIssueKey)
+    const jiraIssue = await utils.getJiraIssueLink(jiraIssueKey)
     if (flags.markdown) {
       const markdownLink = `[${jiraIssueKey}](${jiraIssue})`
       if (flags.clipboard) {
-        pbcopy(markdownLink)
+        utils.pbcopy(markdownLink)
         if (!flags.quiet) {
           this.log(`Copied Jira Issue Markdown Link to clipboard: ${markdownLink}`)
         }
@@ -54,9 +56,9 @@ export default class Link extends Command {
         this.log(`${markdownLink}`)
       }
     } else if (flags.clipboard) {
-      pbcopy(jiraIssue)
+      utils.pbcopy(jiraIssue)
       if (!flags.quiet) {
-        this.log(`Copied Jira Issue to clipboard: ${jiraIssue}`)
+        this.log(`Copied Jira Issue Link to clipboard: ${jiraIssue}`)
       }
     } else {
       this.log(`${jiraIssue}`)
