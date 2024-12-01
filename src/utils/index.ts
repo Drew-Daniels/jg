@@ -41,6 +41,15 @@ async function getJiraIssueLink(identifier: string): Promise<string> {
   return link
 }
 
-function getJiraIssueKeyFromCurrentBranch(): Promise<string> {
-  return runShellCmd('git branch --show-current | cut -d / -f2- | cut -d / -f1 | tr -d "[:space:]" | tr a-z A-Z')
+async function getJiraIssueKeyFromCurrentBranch(): Promise<string> {
+  const jiraIssueKey = await runShellCmd('git branch --show-current | cut -d / -f2- | cut -d / -f1 | tr -d "[:space:]" | tr a-z A-Z')
+  let jiraIssueId;
+  // TODO: Check if Jira Issue Key includes prefix
+  if (/^[A-Z]+-\d{5,}$/.test(jiraIssueKey)) {
+    jiraIssueId = jiraIssueKey.split('-')[1]
+  } else {
+    throw new Error(`Not a Jira Issue Key: ${jiraIssueKey}`)
+  }
+
+  return jiraIssueId
 }
