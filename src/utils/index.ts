@@ -7,6 +7,7 @@ import { JiraClient } from "../jira-client/index.js";
 export default {
   copyToClipboard,
   fetchIssue,
+  getExtractedIssueData,
   getIssueScopeAndSummary,
   getIssueType,
   getJiraIssueKeyFromCurrentBranch,
@@ -90,5 +91,28 @@ function getNumIssueScopes(issueSummary: Issue['fields']['summary']): number {
 
 function copyToClipboard(data: string) {
   clipboard.writeSync(data)
+}
+
+type ExtractedIssueData = {
+  scopes: string[]
+  summary: string
+  type: string
+}
+
+function getExtractedIssueData(issue: Issue): ExtractedIssueData {
+  const type = getIssueType(issue)
+  const issueScopeAndSummary = getIssueScopeAndSummary(issue)
+  const lastScopeIndex = issueScopeAndSummary.lastIndexOf(':')
+  const scopesString = lastScopeIndex === -1 ? '' : `${issueScopeAndSummary.slice(0, Math.max(0, lastScopeIndex))}`
+    .replaceAll(/\s+/g, '')
+  const summary = issueScopeAndSummary.slice(Math.max(0, lastScopeIndex + 1))
+    .replaceAll(/^\s+/g, '')
+  const scopes = scopesString.split(':')
+
+  return {
+    scopes,
+    summary,
+    type,
+  }
 }
 

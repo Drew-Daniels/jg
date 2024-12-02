@@ -26,26 +26,19 @@ export default class Bname extends Command {
       this.error('Cannot use --quiet without --clipboard')
     }
 
-    // TODO: Dedupe with Cc
     const issueKey = args.issueIdOrKey ?? (await utils.getJiraIssueKeyFromCurrentBranch());
 
     const issue = await utils.fetchIssue(issueKey)
 
-    const issueType = utils.getIssueType(issue)
-    const issueScopeAndSummary = utils.getIssueScopeAndSummary(issue)
+    const { scopes, summary, type } = utils.getExtractedIssueData(issue)
 
-    const lastScopeIndex = issueScopeAndSummary.lastIndexOf(':')
-    const issueScope = lastScopeIndex === -1 ? '' : `${issueScopeAndSummary.slice(0, Math.max(0, lastScopeIndex))}`
-      .replaceAll(/\s+/g, '')
-      .replaceAll(':', '-')
-      .toUpperCase()
-    const issueSummary = issueScopeAndSummary.slice(Math.max(0, lastScopeIndex + 1))
-      .replaceAll(/^\s+/g, '')
+    const issueScope = scopes.join('-').toUpperCase()
+    const issueSummary = summary
       .replaceAll('.', '')
       .replaceAll(/\s/g, '-')
       .toLowerCase()
 
-    const message = `${issueType === 'Bug' ? 'fix' : 'feat'}/${issueKey}/${issueScope}-${issueSummary}`
+    const message = `${type === 'Bug' ? 'fix' : 'feat'}/${issueKey}/${issueScope}-${issueSummary}`
     if (flags.clipboard) {
       utils.copyToClipboard(message)
       if (!flags.quiet) {
