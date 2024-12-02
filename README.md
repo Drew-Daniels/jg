@@ -85,7 +85,7 @@ Get Jira Issue ID from current Git branch
 
 ```
 USAGE
-  $ jg id
+  $ jg id [-c] [-h] [-q]
 
 FLAGS
   -c, --clipboard  (optional) Copy to clipboard
@@ -109,7 +109,7 @@ Get Jira Issue key from current Git branch
 
 ```
 USAGE
-  $ jg key
+  $ jg key [-c] [-h] [-q]
 
 FLAGS
   -c, --clipboard  (optional) Copy to clipboard
@@ -133,7 +133,7 @@ Returns a URL to a Jira Issue
 
 ```
 USAGE
-  $ jg url [jiraIssueIdOrKey] [-c,-h,-q]
+  $ jg url [ISSUEIDORKEY] [-c] [-h] [-m] [-q]
 
 FLAGS
   -c, --clipboard  (optional) Copy to clipboard
@@ -167,7 +167,7 @@ Generates a Conventional Commit Message from a Jira Issue ID/Key
 
 ```
 USAGE
-  $ jg cc
+  $ jg cc [ISSUEIDORKEY] [-c] [-h] [-q]
 
 FLAGS
   -c, --clipboard  (optional) Copy to clipboard
@@ -191,7 +191,7 @@ Generates a Conventional Commit Message from a Jira Issue ID/Key
 
 ```
 USAGE
-  $ jg bname
+  $ jg bname [ISSUEIDORKEY] [-c] [-h] [-q]
 
 FLAGS
   -c, --clipboard  (optional) Copy to clipboard
@@ -215,7 +215,7 @@ Generates a Slack Message Linking to a Jira Issue and corresponding Pull Request
 
 ```
 USAGE
-  $ jg pr [jiraIssueIdOrKey] [-c,-h,-q]
+  $ jg pr [ISSUEIDORKEY] [-c] [-h] [-q]
 
 FLAGS
   -c, --clipboard  (optional) Copy to clipboard

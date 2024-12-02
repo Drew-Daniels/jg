@@ -4,7 +4,7 @@ import utils from '../../utils/index.js'
 
 export default class Url extends Command {
   static override args = {
-    id: Args.string({ description: 'Jira Issue ID or Key' }),
+    issueIdOrKey: Args.string({ description: 'Jira Issue ID or Key' }),
   }
 
   static override description = 'Returns a URL to a Jira Issue'
@@ -29,15 +29,15 @@ export default class Url extends Command {
 
     let jiraIssueKey;
 
-    if (args.id) {
-      if (new RegExp(`^${this.PREFIX}-\\d{5,}$`).test(args.id)) {
+    if (args.issueIdOrKey) {
+      if (new RegExp(`^${this.PREFIX}-\\d{5,}$`).test(args.issueIdOrKey)) {
         // Full Jira Issue Key specified, no changes necessary
-        jiraIssueKey = args.id
-      } else if (/^\d{5,}$/.test(args.id)) {
+        jiraIssueKey = args.issueIdOrKey
+      } else if (/^\d{5,}$/.test(args.issueIdOrKey)) {
         // Only Jira Issue ID specified, add prefix
-        jiraIssueKey = `${this.PREFIX}-${args.id}`
+        jiraIssueKey = `${this.PREFIX}-${args.issueIdOrKey}`
       } else {
-        this.error(`Invalid Jira Issue ID: ${args.id}`)
+        this.error(`Invalid Jira Issue ID: ${args.issueIdOrKey}`)
       }
     } else {
       jiraIssueKey = await utils.getJiraIssueKeyFromCurrentBranch()
