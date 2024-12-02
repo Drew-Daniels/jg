@@ -8,13 +8,27 @@ Utility functions for Jira and Git
 
 <!-- toc -->
 
+- [Dependencies](#dependencies)
+- [Setup](#setup)
 - [Usage](#usage)
 - [Commands](#commands)
 <!-- tocstop -->
 
+# Dependencies
+
+- [gh](https://github.com/cli/cli) - Used for interfacing with the GitHub API
+- [jira.js](https://github.com/MrRefactoring/jira.js) - Used for interfacing with the Jira API
+- [clipboardy](https://github.com/sindresorhus/clipboardy) - Used for copying to clipboard (cross-platform)
+
 # Setup
 
-You will need the following env vars set in your shell:
+## GitHub CLI
+
+You will need to install the `gh` CLI and run `gh auth login` to authenticate with GitHub
+
+## Jira API
+
+You will need the following env vars set in your shell to authenticate with the Jira API:
 
 ```sh
 # Your Organization's Jira instance
@@ -24,11 +38,6 @@ export JIRA_API_TOKEN="YOUR_JIRA_API_TOKEN"
 # Your Organization's email address - Ex. <firstname><lastname>@<organization>.com
 export JIRA_API_EMAIL="YOUR_JIRA_EMAIL"
 ```
-
-# Dependencies
-
-- [jira.js](https://github.com/MrRefactoring/jira.js) - Used for interfacing with the Jira API
-- [clipboardy](https://github.com/sindresorhus/clipboardy) - Used for copying to clipboard (cross-platform)
 
 # Usage
 
@@ -202,11 +211,11 @@ _See code: [src/commands/bname/index.ts](https://github.com/Drew-Daniels/jg/blob
 
 ## `jg pr`
 
-Generates a Conventional Commit Message from a Jira Issue ID/Key
+Generates a Slack Message Linking to a Jira Issue and corresponding Pull Request
 
 ```
 USAGE
-  $ jg pr
+  $ jg pr [jiraIssueIdOrKey] [-c,-h,-q]
 
 FLAGS
   -c, --clipboard  (optional) Copy to clipboard
@@ -214,12 +223,15 @@ FLAGS
   -q, --quiet      (optional) Suppress output
 
 DESCRIPTION
-  Generates a Conventional Commit Message from a Jira Issue ID/Key
+  Generates a Slack Message Linking to a Jira Issue and corresponding Pull Request
 
 EXAMPLES
   $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
   $ jg pr
-  feat(NOTIFICATIONS): Add Profile Update Notification
+  PR for [XYZ-12345](<YOUR-JIRA-HOSTNAME>/browse/XYZ-12345): [#16303](https://github.com/<REPO-OWNER>/<REPO-NAME>/pull/16303)
+
+  $ jg pr -c
+  Copied Slack Message to Clipboard: PR for [XYZ-12345](<YOUR-JIRA-HOSTNAME>/browse/XYZ-12345): [#16303](https://github.com/<REPO-OWNER>/<REPO-NAME>/pull/16303)
 ```
 
 _See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/pr/index.ts)_
