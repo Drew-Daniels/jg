@@ -12,6 +12,24 @@ Utility functions for Jira and Git
 - [Commands](#commands)
 <!-- tocstop -->
 
+# Setup
+
+You will need the following env vars set in your shell:
+
+```sh
+# Your Organization's Jira instance
+export JIRA_HOSTNAME="https://jira.example.com"
+# Your Jira API token https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/
+export JIRA_API_TOKEN="YOUR_JIRA_API_TOKEN"
+# Your Organization's email address - Ex. <firstname><lastname>@<organization>.com
+export JIRA_API_EMAIL="YOUR_JIRA_EMAIL"
+```
+
+# Dependencies
+
+- [jira.js](https://github.com/MrRefactoring/jira.js) - Used for interfacing with the Jira API
+- [clipboardy](https://github.com/sindresorhus/clipboardy) - Used for copying to clipboard (cross-platform)
+
 # Usage
 
 <!-- usage -->

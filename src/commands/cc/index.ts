@@ -1,4 +1,5 @@
 import { Args, Command, Flags } from '@oclif/core'
+import clipboard from 'clipboardy'
 
 import utils from '../../utils/index.js'
 
@@ -27,6 +28,7 @@ export default class Cc extends Command {
       this.error('Cannot use --quiet without --clipboard')
     }
 
+    // TODO: Dedupe with bname
     const issueKey = args.issueIdOrKey ?? (await utils.getJiraIssueKeyFromCurrentBranch());
 
     const issue = await utils.fetchIssue(issueKey)
@@ -35,12 +37,13 @@ export default class Cc extends Command {
     const issueScopeAndSummary = utils.getIssueScopeAndSummary(issue)
 
     const lastScopeIndex = issueScopeAndSummary.lastIndexOf(':')
-    const issueScope = issueScopeAndSummary.slice(0, Math.max(0, lastScopeIndex))
+    const issueScope = lastScopeIndex === -1 ? '' : `(${issueScopeAndSummary.slice(0, Math.max(0, lastScopeIndex))})`
+      .replaceAll(/\s+/g, '')
     const issueSummary = issueScopeAndSummary.slice(Math.max(0, lastScopeIndex + 1)).replaceAll(/^\s+/g, '')
 
-    const message = `${issueType === 'Bug' ? 'fix' : 'feat'}(${issueScope}): ${issueSummary}`
+    const message = `${issueType === 'Bug' ? 'fix' : 'feat'}${issueScope}: ${issueSummary}`
     if (flags.clipboard) {
-      utils.pbcopy(message)
+      clipboard.writeSync(message)
       if (!flags.quiet) {
         this.log(`Copied Conventional Commit Message to clipboard: ${message}`)
       }

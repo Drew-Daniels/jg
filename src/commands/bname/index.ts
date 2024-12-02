@@ -1,8 +1,11 @@
 import { Args, Command, Flags } from '@oclif/core'
+import clipboard from 'clipboardy'
+
+import utils from '../../utils/index.js'
 
 export default class Bname extends Command {
   static override args = {
-    file: Args.string({ description: 'file to read' }),
+    issueIdOrKey: Args.string({ description: 'Jira Issue ID or Key' }),
   }
 
   static override description = 'Generates a Git branch name from a Jira Issue ID/Key'
@@ -12,19 +15,45 @@ export default class Bname extends Command {
   ]
 
   static override flags = {
-    // flag with no value (-f, --force)
-    force: Flags.boolean({ char: 'f' }),
-    // flag with a value (-n, --name=VALUE)
-    name: Flags.string({ char: 'n', description: 'name to print' }),
+    clipboard: Flags.boolean({ char: 'c', default: false, description: 'Copy to clipboard' }),
+    help: Flags.help({ char: 'h', description: 'Show help' }),
+    quiet: Flags.boolean({ char: 'q', description: 'Suppress output' }),
   }
 
   public async run(): Promise<void> {
     const { args, flags } = await this.parse(Bname)
 
-    const name = flags.name ?? 'world'
-    this.log(`hello ${name} from /Users/drew.daniels/projects/jg/src/commands/bname/index.ts`)
-    if (args.file && flags.force) {
-      this.log(`you input --force and --file: ${args.file}`)
+    if (flags.quiet && !flags.clipboard) {
+      this.error('Cannot use --quiet without --clipboard')
+    }
+
+    // TODO: Dedupe with Cc
+    const issueKey = args.issueIdOrKey ?? (await utils.getJiraIssueKeyFromCurrentBranch());
+
+    const issue = await utils.fetchIssue(issueKey)
+
+    const issueType = utils.getIssueType(issue)
+    const issueScopeAndSummary = utils.getIssueScopeAndSummary(issue)
+
+    const lastScopeIndex = issueScopeAndSummary.lastIndexOf(':')
+    const issueScope = lastScopeIndex === -1 ? '' : `${issueScopeAndSummary.slice(0, Math.max(0, lastScopeIndex))}`
+      .replaceAll(/\s+/g, '')
+      .replaceAll(':', '-')
+      .toUpperCase()
+    const issueSummary = issueScopeAndSummary.slice(Math.max(0, lastScopeIndex + 1))
+      .replaceAll(/^\s+/g, '')
+      .replaceAll('.', '')
+      .replaceAll(/\s/g, '-')
+      .toLowerCase()
+
+    const message = `${issueType === 'Bug' ? 'fix' : 'feat'}/${issueKey}/${issueScope}-${issueSummary}`
+    if (flags.clipboard) {
+      clipboard.writeSync(message)
+      if (!flags.quiet) {
+        this.log(`Copied Branch Name to clipboard: ${message}`)
+      }
+    } else {
+      this.log(message)
     }
   }
 }

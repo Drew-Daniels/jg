@@ -110,3 +110,4 @@ function getIssueScopeAndSummary(issue: Issue): string {
 function getNumIssueScopes(issueSummary: Issue['fields']['summary']): number {
   return (issueSummary.match(/:/g) || []).length
 }
+
