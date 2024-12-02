@@ -1,20 +1,21 @@
-jg
-=================
+# `jgit`
 
 Utility functions for Jira and Git
-
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/jg.svg)](https://npmjs.org/package/jg)
 [![Downloads/week](https://img.shields.io/npm/dw/jg.svg)](https://npmjs.org/package/jg)
 
-
 <!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [Usage](#usage)
+- [Commands](#commands)
 <!-- tocstop -->
+
 # Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g jg
 $ jg COMMAND
@@ -26,64 +27,184 @@ USAGE
   $ jg COMMAND
 ...
 ```
+
 <!-- usagestop -->
+
 # Commands
+
 <!-- commands -->
-* [`jg hello PERSON`](#jg-hello-person)
-* [`jg hello world`](#jg-hello-world)
-* [`jg help [COMMAND]`](#jg-help-command)
-* [`jg plugins`](#jg-plugins)
-* [`jg plugins add PLUGIN`](#jg-plugins-add-plugin)
-* [`jg plugins:inspect PLUGIN...`](#jg-pluginsinspect-plugin)
-* [`jg plugins install PLUGIN`](#jg-plugins-install-plugin)
-* [`jg plugins link PATH`](#jg-plugins-link-path)
-* [`jg plugins remove [PLUGIN]`](#jg-plugins-remove-plugin)
-* [`jg plugins reset`](#jg-plugins-reset)
-* [`jg plugins uninstall [PLUGIN]`](#jg-plugins-uninstall-plugin)
-* [`jg plugins unlink [PLUGIN]`](#jg-plugins-unlink-plugin)
-* [`jg plugins update`](#jg-plugins-update)
 
-## `jg hello PERSON`
+- [`jg id`](#jg-id)
+- [`jg key`](#jg-key)
+- [`jg link`](#jg-link)
+- [`jg cc`](#jg-cc)
+- [`jg bname`](#jg-bname)
+- [`jg pr`](#jg-pr)
+- [`jg help [COMMAND]`](#jg-help-command)
+- [`jg plugins`](#jg-plugins)
+- [`jg plugins add PLUGIN`](#jg-plugins-add-plugin)
+- [`jg plugins:inspect PLUGIN...`](#jg-pluginsinspect-plugin)
+- [`jg plugins install PLUGIN`](#jg-plugins-install-plugin)
+- [`jg plugins link PATH`](#jg-plugins-link-path)
+- [`jg plugins remove [PLUGIN]`](#jg-plugins-remove-plugin)
+- [`jg plugins reset`](#jg-plugins-reset)
+- [`jg plugins uninstall [PLUGIN]`](#jg-plugins-uninstall-plugin)
+- [`jg plugins unlink [PLUGIN]`](#jg-plugins-unlink-plugin)
+- [`jg plugins update`](#jg-plugins-update)
 
-Say hello
+## `jg id`
+
+Get Jira Issue ID from current Git branch
 
 ```
 USAGE
-  $ jg hello PERSON -f <value>
-
-ARGUMENTS
-  PERSON  Person to say hello to
+  $ jg id
 
 FLAGS
-  -f, --from=<value>  (required) Who is saying hello
+  -c, --clipboard  (optional) Copy to clipboard
+  -h, --help       (optional) Show help
+  -q, --quiet      (optional) Suppress output
 
 DESCRIPTION
-  Say hello
+  Returns Jira Issue ID from current Git branch
 
 EXAMPLES
-  $ jg hello friend --from oclif
-  hello friend from oclif! (./src/commands/hello/index.ts)
+  $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
+  $ jg id
+  12345
 ```
 
-_See code: [src/commands/hello/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/hello/index.ts)_
+_See code: [src/commands/id/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/id/index.ts)_
 
-## `jg hello world`
+## `jg key`
 
-Say hello world
+Get Jira Issue key from current Git branch
 
 ```
 USAGE
-  $ jg hello world
+  $ jg key
+
+FLAGS
+  -c, --clipboard  (optional) Copy to clipboard
+  -h, --help       (optional) Show help
+  -q, --quiet      (optional) Suppress output
 
 DESCRIPTION
-  Say hello world
+  Returns Jira Issue Key from current Git branch
 
 EXAMPLES
-  $ jg hello world
-  hello world! (./src/commands/hello/world.ts)
+  $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
+  $ jg key
+  XYZ-12345
 ```
 
-_See code: [src/commands/hello/world.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/hello/world.ts)_
+_See code: [src/commands/key/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/key/index.ts)_
+
+## `jg link`
+
+Get Jira Issue link from current Git branch
+
+```
+USAGE
+  $ jg link [jiraIssueIdOrKey] [-c,-h,-q]
+
+FLAGS
+  -c, --clipboard  (optional) Copy to clipboard
+  -h, --help       (optional) Show help
+  -m, --markdown   (optional) Get Markdown Link to Jira Issue
+  -q, --quiet      (optional) Suppress output
+
+DESCRIPTION
+  Returns Jira Issue Link from current Git branch
+
+EXAMPLES
+  $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
+  $ jg link
+  XYZ-12345
+
+  $ jg link ZYX-54321
+  ZYX-54321
+
+  $ jg link ZYX-54321 -c
+  Copied Jira Issue Link to clipboard: <YOUR-JIRA-HOSTNAME>/browse/ZYX-54321
+
+  $ jg link ZYX-54321 -m
+  Copied Jira Issue Markdown Link to clipboard: [ZYX-54321](<YOUR-JIRA-HOSTNAME>/browse/ZYX-54321)
+```
+
+_See code: [src/commands/link/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/link/index.ts)_
+
+## `jg cc`
+
+Generates a Conventional Commit Message from a Jira Issue ID/Key
+
+```
+USAGE
+  $ jg cc
+
+FLAGS
+  -c, --clipboard  (optional) Copy to clipboard
+  -h, --help       (optional) Show help
+  -q, --quiet      (optional) Suppress output
+
+DESCRIPTION
+  Generates a Conventional Commit Message from a Jira Issue ID/Key
+
+EXAMPLES
+  $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
+  $ jg cc
+  feat(NOTIFICATIONS): Add Profile Update Notification
+```
+
+_See code: [src/commands/cc/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/cc/index.ts)_
+
+## `jg bname`
+
+Generates a Conventional Commit Message from a Jira Issue ID/Key
+
+```
+USAGE
+  $ jg bname
+
+FLAGS
+  -c, --clipboard  (optional) Copy to clipboard
+  -h, --help       (optional) Show help
+  -q, --quiet      (optional) Suppress output
+
+DESCRIPTION
+  Generates a Conventional Commit Message from a Jira Issue ID/Key
+
+EXAMPLES
+  $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
+  $ jg bname
+  feat(NOTIFICATIONS): Add Profile Update Notification
+```
+
+_See code: [src/commands/bname/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/bname/index.ts)_
+
+## `jg pr`
+
+Generates a Conventional Commit Message from a Jira Issue ID/Key
+
+```
+USAGE
+  $ jg pr
+
+FLAGS
+  -c, --clipboard  (optional) Copy to clipboard
+  -h, --help       (optional) Show help
+  -q, --quiet      (optional) Suppress output
+
+DESCRIPTION
+  Generates a Conventional Commit Message from a Jira Issue ID/Key
+
+EXAMPLES
+  $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
+  $ jg pr
+  feat(NOTIFICATIONS): Add Profile Update Notification
+```
+
+_See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/pr/index.ts)_
 
 ## `jg help [COMMAND]`
 
@@ -394,4 +515,5 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.17/src/commands/plugins/update.ts)_
+
 <!-- commandsstop -->
