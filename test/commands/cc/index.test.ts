@@ -40,6 +40,21 @@ describe('cc', () => {
         const { stdout } = await runCommand('cc')
         expect(stdout).to.equal("fix: This is an issue summary\n")
       })
+      it('prints a Conventional Git Commit Message for Jira issue with 1 scope', async () => {
+        getExtractedIssueDataStub = sinon.stub(utils, 'getExtractedIssueData').resolves({ scopes: ['Scope'], summary: 'This is an issue summary', type: 'Bug' })
+        const { stdout } = await runCommand('cc')
+        expect(stdout).to.equal("fix(Scope): This is an issue summary\n")
+      })
+      it('prints a Conventional Git Commit Message for Jira issue with 2 scopes', async () => {
+        getExtractedIssueDataStub = sinon.stub(utils, 'getExtractedIssueData').resolves({ scopes: ['Scope1', 'Scope2'], summary: 'This is an issue summary', type: 'Bug' })
+        const { stdout } = await runCommand('cc')
+        expect(stdout).to.equal("fix(Scope1:Scope2): This is an issue summary\n")
+      })
+      it('prints a Conventional Git Commit Message for Jira issue with 3 scopes', async () => {
+        getExtractedIssueDataStub = sinon.stub(utils, 'getExtractedIssueData').resolves({ scopes: ['Scope1', 'Scope2', 'Scope3'], summary: 'This is an issue summary', type: 'Bug' })
+        const { stdout } = await runCommand('cc')
+        expect(stdout).to.equal("fix(Scope1:Scope2:Scope3): This is an issue summary\n")
+      })
     })
     describe('and not on a branch with a Jira Issue Key', () => {
       it('throws an error', async () => {
