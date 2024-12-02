@@ -1,16 +1,15 @@
 import { runCommand } from '@oclif/test'
 import { expect } from 'chai'
-import clipboard from 'clipboardy'
 import sinon from 'sinon'
 
 import utils from '../../../src/utils/index.js'
 
 describe('url', () => {
-  let clipboardyStub: sinon.SinonStub
+  let copyToClipboardStub: sinon.SinonStub
   beforeEach(() => {
     sinon.stub(utils, 'getJiraIssueKeyFromCurrentBranch').resolves('EMR-11111')
     sinon.stub(utils, 'getJiraIssueLink').resolves('https://jira.atlassian.com/browse/EMR-11111')
-    clipboardyStub = sinon.stub(clipboard, 'writeSync')
+    copyToClipboardStub = sinon.stub(utils, 'copyToClipboard')
   })
 
   describe('when no options are passed', () => {
@@ -23,12 +22,12 @@ describe('url', () => {
   describe('when options are passed', () => {
     it('--clipboard prints the Jira Issue url and copies it to the clipboard', async () => {
       const { stdout } = await runCommand('url --clipboard')
-      expect(clipboardyStub.calledOnce).to.be.true
+      expect(copyToClipboardStub.calledOnce).to.be.true
       expect(stdout).to.equal('Copied Jira Issue URL to clipboard: https://jira.atlassian.com/browse/EMR-11111\n')
     })
     it('--clipboard & --quiet copies the Jira Issue url to the clipboard and suppresses output', async () => {
       const { stdout } = await runCommand('url --quiet --clipboard')
-      expect(clipboardyStub.calledOnce).to.be.true
+      expect(copyToClipboardStub.calledOnce).to.be.true
       expect(stdout).to.equal('')
     })
     it('--markdown prints the Jira Issue Markdown Link', async () => {
@@ -37,12 +36,12 @@ describe('url', () => {
     })
     it('--clipboard & --markdown prints the Jira Issue Markdown Link and copies it to the clipboard', async () => {
       const { stdout } = await runCommand('url --markdown --clipboard')
-      expect(clipboardyStub.calledOnce).to.be.true
+      expect(copyToClipboardStub.calledOnce).to.be.true
       expect(stdout).to.equal('Copied Jira Issue Markdown Link to clipboard: [EMR-11111](https://jira.atlassian.com/browse/EMR-11111)\n')
     })
     it('--quiet without --clipboard throws an error', async () => {
       const { error } = await runCommand('url --quiet')
-      expect(clipboardyStub.calledOnce).to.be.false
+      expect(copyToClipboardStub.calledOnce).to.be.false
       expect(error?.message).to.contain('Cannot use --quiet without --clipboard')
     })
     it('--help prints the help', async () => {

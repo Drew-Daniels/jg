@@ -1,5 +1,4 @@
 import { Args, Command, Flags } from '@oclif/core'
-import clipboard from 'clipboardy'
 
 import utils from '../../utils/index.js'
 
@@ -43,7 +42,7 @@ export default class Cc extends Command {
 
     const message = `${issueType === 'Bug' ? 'fix' : 'feat'}${issueScope}: ${issueSummary}`
     if (flags.clipboard) {
-      clipboard.writeSync(message)
+      utils.copyToClipboard(message)
       if (!flags.quiet) {
         this.log(`Copied Conventional Commit Message to clipboard: ${message}`)
       }

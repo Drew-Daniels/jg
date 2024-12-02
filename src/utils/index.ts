@@ -1,30 +1,11 @@
-import { Version3Client } from "jira.js";
+import clipboard from 'clipboardy'
 import { Issue } from "jira.js/out/version3/models/issue.js";
 import { spawn } from 'node:child_process'
 
-if (!process.env.JIRA_API_TOKEN) {
-  throw new Error('Missing JIRA_API_TOKEN')
-}
-
-if (!process.env.JIRA_API_HOSTNAME) {
-  throw new Error('Missing JIRA_API_HOSTNAME')
-}
-
-if (!process.env.JIRA_API_EMAIL) {
-  throw new Error('Missing JIRA_API_EMAIL')
-}
-
-const client = new Version3Client({
-  authentication: {
-    basic: {
-      apiToken: process.env.JIRA_API_TOKEN,
-      email: process.env.JIRA_API_EMAIL
-    }
-  },
-  host: process.env.JIRA_API_HOSTNAME
-});
+import { JiraClient } from "../jira-client/index.js";
 
 export default {
+  copyToClipboard,
   fetchIssue,
   getIssueScopeAndSummary,
   getIssueType,
@@ -32,7 +13,6 @@ export default {
   getJiraIssueLink,
   getLatestPrForJiraIssue,
   getNumIssueScopes,
-  pbcopy,
   runShellCmd
 }
 
@@ -52,13 +32,6 @@ function runShellCmd(cmd: string, args: string[] = []): Promise<Record<string, u
       reject(Buffer.from(data, 'utf8').toString())
     })
   })
-}
-
-// https://stackoverflow.com/a/13735363/13175926
-function pbcopy(data: string) {
-  const proc = spawn('pbcopy')
-  proc.stdin.write(data)
-  proc.stdin.end()
 }
 
 /**
@@ -83,13 +56,17 @@ async function getJiraIssueKeyFromCurrentBranch(): Promise<string> {
   return jiraIssueId
 }
 
-async function getLatestPrForJiraIssue(jiraIssueId: string): Promise<string> {
-  const pr = await runShellCmd(`gh search prs ${jiraIssueId} --assignee="@me" --json=number,title,url --match=title --limit=1 | jq -r '.[0] | [.number, .url] | join(" ")'`) as string
-  return pr
+async function getLatestPrForJiraIssue(jiraIssueId: string): Promise<string[]> {
+  const joinedResult = await runShellCmd(`gh search prs ${jiraIssueId} --assignee="@me" --json=number,title,url --match=title --limit=1 | jq -r '.[0] | [.number, .url] | join(" ")'`) as string
+  if (joinedResult === ' ') {
+    throw new Error(`No PR found for ${jiraIssueId} under your name`)
+  }
+
+  return joinedResult.replaceAll('\n', '').split(' ')
 }
 
 async function fetchIssue(issueIdOrKey: string): Promise<Issue> {
-  const issue = await client.issues.getIssue({ issueIdOrKey })
+  const issue = await JiraClient.issues.getIssue({ issueIdOrKey })
   return issue
 }
 
@@ -109,5 +86,9 @@ function getIssueScopeAndSummary(issue: Issue): string {
 
 function getNumIssueScopes(issueSummary: Issue['fields']['summary']): number {
   return (issueSummary.match(/:/g) || []).length
+}
+
+function copyToClipboard(data: string) {
+  clipboard.writeSync(data)
 }
 

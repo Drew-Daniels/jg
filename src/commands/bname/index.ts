@@ -1,5 +1,4 @@
 import { Args, Command, Flags } from '@oclif/core'
-import clipboard from 'clipboardy'
 
 import utils from '../../utils/index.js'
 
@@ -48,7 +47,7 @@ export default class Bname extends Command {
 
     const message = `${issueType === 'Bug' ? 'fix' : 'feat'}/${issueKey}/${issueScope}-${issueSummary}`
     if (flags.clipboard) {
-      clipboard.writeSync(message)
+      utils.copyToClipboard(message)
       if (!flags.quiet) {
         this.log(`Copied Branch Name to clipboard: ${message}`)
       }

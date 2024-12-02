@@ -1,5 +1,4 @@
 import { Command, Flags } from '@oclif/core'
-import clipboard from 'clipboardy'
 
 import utils from '../../utils/index.js'
 
@@ -26,7 +25,7 @@ export default class Key extends Command {
     const jiraIssueKey = await utils.getJiraIssueKeyFromCurrentBranch()
 
     if (flags.clipboard) {
-      clipboard.writeSync(jiraIssueKey)
+      utils.copyToClipboard(jiraIssueKey)
       if (!flags.quiet) {
         this.log(`Copied Jira Issue Key to clipboard: ${jiraIssueKey}`)
       }

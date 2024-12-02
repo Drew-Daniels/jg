@@ -1,5 +1,4 @@
 import { Args, Command, Flags } from '@oclif/core'
-import clipboard from 'clipboardy'
 
 import utils from '../../utils/index.js'
 
@@ -49,7 +48,7 @@ export default class Url extends Command {
     if (flags.markdown) {
       const markdownLink = `[${jiraIssueKey}](${jiraIssue})`
       if (flags.clipboard) {
-        clipboard.writeSync(markdownLink)
+        utils.copyToClipboard(markdownLink)
         if (!flags.quiet) {
           this.log(`Copied Jira Issue Markdown Link to clipboard: ${markdownLink}`)
         }
@@ -57,7 +56,7 @@ export default class Url extends Command {
         this.log(`${markdownLink}`)
       }
     } else if (flags.clipboard) {
-      clipboard.writeSync(jiraIssue)
+      utils.copyToClipboard(jiraIssue)
       if (!flags.quiet) {
         this.log(`Copied Jira Issue URL to clipboard: ${jiraIssue}`)
       }
