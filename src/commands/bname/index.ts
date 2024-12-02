@@ -28,9 +28,7 @@ export default class Bname extends Command {
 
     const issueKey = args.issueIdOrKey ?? (await utils.getJiraIssueKeyFromCurrentBranch());
 
-    const issue = await utils.fetchIssue(issueKey)
-
-    const { scopes, summary, type } = utils.getExtractedIssueData(issue)
+    const { scopes, summary, type } = await utils.getExtractedIssueData(issueKey)
 
     const issueScope = scopes.join('-').toUpperCase()
     const issueSummary = summary

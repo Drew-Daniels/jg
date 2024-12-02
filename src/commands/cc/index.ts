@@ -29,10 +29,10 @@ export default class Cc extends Command {
 
     const issueKey = args.issueIdOrKey ?? (await utils.getJiraIssueKeyFromCurrentBranch());
 
-    const { scopes, summary, type } = utils.getExtractedIssueData(await utils.fetchIssue(issueKey))
-    const issueScope = scopes.join(':')
+    const { scopes, summary, type } = await utils.getExtractedIssueData(issueKey)
+    const issueScope = scopes.length > 0 ? `(${scopes.join(':')})` : ''
 
-    const message = `${type === 'Bug' ? 'fix' : 'feat'}(${issueScope}): ${summary}`
+    const message = `${type === 'Bug' ? 'fix' : 'feat'}${issueScope}: ${summary}`
     if (flags.clipboard) {
       utils.copyToClipboard(message)
       if (!flags.quiet) {

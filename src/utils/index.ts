@@ -99,7 +99,8 @@ type ExtractedIssueData = {
   type: string
 }
 
-function getExtractedIssueData(issue: Issue): ExtractedIssueData {
+async function getExtractedIssueData(issueIdOrKey: string): Promise<ExtractedIssueData> {
+  const issue = await fetchIssue(issueIdOrKey)
   const type = getIssueType(issue)
   const issueScopeAndSummary = getIssueScopeAndSummary(issue)
   const lastScopeIndex = issueScopeAndSummary.lastIndexOf(':')
@@ -107,7 +108,7 @@ function getExtractedIssueData(issue: Issue): ExtractedIssueData {
     .replaceAll(/\s+/g, '')
   const summary = issueScopeAndSummary.slice(Math.max(0, lastScopeIndex + 1))
     .replaceAll(/^\s+/g, '')
-  const scopes = scopesString.split(':')
+  const scopes = scopesString.split(':').filter(Boolean)
 
   return {
     scopes,
