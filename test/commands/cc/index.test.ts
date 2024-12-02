@@ -13,19 +13,15 @@ describe('cc', () => {
   })
   describe('when run without arguments or options', () => {
     describe('and on a branch with a Jira Issue Key for a Story', () => {
-      beforeEach(() => {
-        getExtractedIssueDataStub = sinon.stub(utils, 'getExtractedIssueData').resolves({ scopes: [], summary: 'This is an issue summary', type: 'Story' })
-      })
       it('prints a Conventional Git Commit Message for Jira issue with no scopes', async () => {
+        getExtractedIssueDataStub = sinon.stub(utils, 'getExtractedIssueData').resolves({ scopes: [], summary: 'This is an issue summary', type: 'Story' })
         const { stdout } = await runCommand('cc')
         expect(stdout).to.equal("feat: This is an issue summary\n")
       })
     })
     describe('and on a branch with a Jira Issue Key for a Bug', () => {
-      beforeEach(() => {
-        getExtractedIssueDataStub = sinon.stub(utils, 'getExtractedIssueData').resolves({ scopes: [], summary: 'This is an issue summary', type: 'Bug' })
-      })
       it('prints a Conventional Git Commit Message for Jira issue with no scopes', async () => {
+        getExtractedIssueDataStub = sinon.stub(utils, 'getExtractedIssueData').resolves({ scopes: [], summary: 'This is an issue summary', type: 'Bug' })
         const { stdout } = await runCommand('cc')
         expect(stdout).to.equal("fix: This is an issue summary\n")
       })
