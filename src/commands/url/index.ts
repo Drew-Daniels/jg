@@ -2,12 +2,12 @@ import { Args, Command, Flags } from '@oclif/core'
 
 import utils from '../../utils/index.js'
 
-export default class Link extends Command {
+export default class Url extends Command {
   static override args = {
     id: Args.string({ description: 'Jira Issue ID or Key' }),
   }
 
-  static override description = 'Copies Jira Issue ID, Markdown Link, or Link to clipboard'
+  static override description = 'Returns a URL to a Jira Issue'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
@@ -21,7 +21,7 @@ export default class Link extends Command {
   readonly PREFIX = 'EMR'
 
   public async run(): Promise<void> {
-    const { args, flags } = await this.parse(Link)
+    const { args, flags } = await this.parse(Url)
 
     if (flags.quiet && !flags.clipboard) {
       this.error('Cannot use --quiet without --clipboard')

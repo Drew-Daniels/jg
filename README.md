@@ -36,7 +36,7 @@ USAGE
 
 - [`jg id`](#jg-id)
 - [`jg key`](#jg-key)
-- [`jg link`](#jg-link)
+- [`jg url`](#jg-url)
 - [`jg cc`](#jg-cc)
 - [`jg bname`](#jg-bname)
 - [`jg pr`](#jg-pr)
@@ -100,13 +100,13 @@ EXAMPLES
 
 _See code: [src/commands/key/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/key/index.ts)_
 
-## `jg link`
+## `jg url`
 
-Get Jira Issue link from current Git branch
+Returns a URL to a Jira Issue
 
 ```
 USAGE
-  $ jg link [jiraIssueIdOrKey] [-c,-h,-q]
+  $ jg url [jiraIssueIdOrKey] [-c,-h,-q]
 
 FLAGS
   -c, --clipboard  (optional) Copy to clipboard
@@ -115,24 +115,24 @@ FLAGS
   -q, --quiet      (optional) Suppress output
 
 DESCRIPTION
-  Returns Jira Issue Link from current Git branch
+  Returns a URL to a Jira Issue
 
 EXAMPLES
   $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
-  $ jg link
+  $ jg url
   XYZ-12345
 
-  $ jg link ZYX-54321
+  $ jg url ZYX-54321
   ZYX-54321
 
-  $ jg link ZYX-54321 -c
-  Copied Jira Issue Link to clipboard: <YOUR-JIRA-HOSTNAME>/browse/ZYX-54321
+  $ jg url ZYX-54321 -c
+  Copied Jira Issue url to clipboard: <YOUR-JIRA-HOSTNAME>/browse/ZYX-54321
 
-  $ jg link ZYX-54321 -m
+  $ jg url ZYX-54321 -m
   Copied Jira Issue Markdown Link to clipboard: [ZYX-54321](<YOUR-JIRA-HOSTNAME>/browse/ZYX-54321)
 ```
 
-_See code: [src/commands/link/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/link/index.ts)_
+_See code: [src/commands/url/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/url/index.ts)_
 
 ## `jg cc`
 
