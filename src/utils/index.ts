@@ -1,4 +1,5 @@
 import { Version3Client } from "jira.js";
+import { Issue } from "jira.js/out/version3/models/issue.js";
 import { spawn } from 'node:child_process'
 
 if (!process.env.JIRA_API_TOKEN) {
@@ -9,10 +10,15 @@ if (!process.env.JIRA_API_HOSTNAME) {
   throw new Error('Missing JIRA_API_HOSTNAME')
 }
 
+if (!process.env.JIRA_API_EMAIL) {
+  throw new Error('Missing JIRA_API_EMAIL')
+}
+
 const client = new Version3Client({
   authentication: {
-    oauth2: {
-      accessToken: process.env.JIRA_API_TOKEN
+    basic: {
+      apiToken: process.env.JIRA_API_TOKEN,
+      email: process.env.JIRA_API_EMAIL
     }
   },
   host: process.env.JIRA_API_HOSTNAME
@@ -20,9 +26,12 @@ const client = new Version3Client({
 
 export default {
   fetchIssue,
+  getIssueScopeAndSummary,
+  getIssueType,
   getJiraIssueKeyFromCurrentBranch,
   getJiraIssueLink,
   getLatestPrForJiraIssue,
+  getNumIssueScopes,
   pbcopy,
   runShellCmd
 }
@@ -79,7 +88,25 @@ async function getLatestPrForJiraIssue(jiraIssueId: string): Promise<string> {
   return pr
 }
 
-async function fetchIssue(id: string): Promise<Record<string, unknown>> {
-  const issue = await runShellCmd(`gh issue view ${id}`) as Record<string, unknown>
+async function fetchIssue(issueIdOrKey: string): Promise<Issue> {
+  const issue = await client.issues.getIssue({ issueIdOrKey })
   return issue
+}
+
+function getIssueType(issue: Issue): string {
+  if (issue.fields.issuetype && issue.fields.issuetype.name) {
+    return issue.fields.issuetype.name
+  }
+
+  throw new Error(`Issue ${issue.key} has no issuetype`)
+}
+
+function getIssueScopeAndSummary(issue: Issue): string {
+  const { summary } = issue.fields
+  const formattedSummary = summary.replaceAll(/\s+/g, ' ').replaceAll(/\s+,/g, ',')
+  return formattedSummary
+}
+
+function getNumIssueScopes(issueSummary: Issue['fields']['summary']): number {
+  return (issueSummary.match(/:/g) || []).length
 }
