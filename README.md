@@ -187,7 +187,7 @@ _See code: [src/commands/cc/index.ts](https://github.com/Drew-Daniels/jg/blob/v0
 
 ## `jg bname`
 
-Generates a Conventional Commit Message from a Jira Issue ID/Key
+Generates a Git branch name from a Jira Issue ID/Key
 
 ```
 USAGE
@@ -199,12 +199,16 @@ FLAGS
   -q, --quiet      (optional) Suppress output
 
 DESCRIPTION
-  Generates a Conventional Commit Message from a Jira Issue ID/Key
+  Generates a Git branch name from a Jira Issue ID/Key
 
 EXAMPLES
-  $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
-  $ jg bname
-  feat(NOTIFICATIONS): Add Profile Update Notification
+  $ jg bname XYZ-12345
+  fix/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
+
+  $ jg bname XYZ-12345 -c
+  Copied Git Branch Name to Clipboard:
+    fix/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
+  $ git switch <CTRL-V>
 ```
 
 _See code: [src/commands/bname/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/bname/index.ts)_
