@@ -22,7 +22,7 @@ export default class Url extends Command {
 
   readonly PREFIX = 'EMR'
 
-  public async run(): Promise<void> {
+  public async run(): Promise<{ url: string }> {
     const { args, flags } = await this.parse(Url)
 
     if (flags.quiet && !flags.clipboard) {
@@ -57,13 +57,23 @@ export default class Url extends Command {
       } else {
         this.log(`${markdownLink}`)
       }
-    } else if (flags.clipboard) {
+
+      return {
+        url: markdownLink
+      }
+    }
+
+    if (flags.clipboard) {
       utils.copyToClipboard(jiraIssue)
       if (!flags.quiet) {
         this.log(`Copied Jira Issue URL to clipboard: ${jiraIssue}`)
       }
     } else {
       this.log(`${jiraIssue}`)
+    }
+
+    return {
+      url: jiraIssue
     }
   }
 }
