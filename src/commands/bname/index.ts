@@ -9,6 +9,8 @@ export default class Bname extends Command {
 
   static override description = 'Generates a Git branch name from a Jira Issue ID/Key'
 
+  static override enableJsonFlag = true
+
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
   ]
@@ -19,7 +21,7 @@ export default class Bname extends Command {
     quiet: Flags.boolean({ char: 'q', description: 'Suppress output' }),
   }
 
-  public async run(): Promise<void> {
+  public async run(): Promise<{ bname: string }> {
     const { args, flags } = await this.parse(Bname)
 
     if (flags.quiet && !flags.clipboard) {
@@ -44,6 +46,10 @@ export default class Bname extends Command {
       }
     } else {
       this.log(message)
+    }
+
+    return {
+      bname: message,
     }
   }
 }

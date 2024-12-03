@@ -9,6 +9,8 @@ export default class Pr extends Command {
 
   static override description = 'Generates a Slack Message with a Link to a Jira Issue and corresponding GitHub link'
 
+  static override enableJsonFlag = true
+
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
   ]
@@ -19,7 +21,7 @@ export default class Pr extends Command {
     quiet: Flags.boolean({ char: 'q', description: 'Suppress output' }),
   }
 
-  public async run(): Promise<void> {
+  public async run(): Promise<{ message: string }> {
     const { args, flags } = await this.parse(Pr)
 
     if (flags.quiet && !flags.clipboard) {
@@ -43,6 +45,10 @@ export default class Pr extends Command {
       }
     } else {
       this.log(slackMessage)
+    }
+
+    return {
+      message: slackMessage
     }
   }
 }
