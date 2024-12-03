@@ -10,6 +10,8 @@ export default class Cc extends Command {
 
   static override description = 'Generates a Conventional Commit Message from a Jira Issue ID/Key'
 
+  static override enableJsonFlag = true
+
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
   ]
@@ -20,7 +22,7 @@ export default class Cc extends Command {
     quiet: Flags.boolean({ char: 'q', description: 'Suppress output' }),
   }
 
-  public async run(): Promise<void> {
+  public async run(): Promise<{ message: string }> {
     const { args, flags } = await this.parse(Cc)
 
     if (flags.quiet && !flags.clipboard) {
@@ -40,6 +42,10 @@ export default class Cc extends Command {
       }
     } else {
       this.log(message)
+    }
+
+    return {
+      message
     }
   }
 }
