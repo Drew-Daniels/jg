@@ -12,12 +12,12 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
 
   static enableJsonFlag = true
 
-  // static examples = [
-  //   '<%= config.bin %> <%= command.id %>',
-  //   '<%= config.bin %> <%= command.id %> --clipboard',
-  //   '<%= config.bin %> <%= command.id %> --clipboard --quiet',
-  //   '<%= config.bin %> <%= command.id %> --json',
-  // ]
+  static examples = [
+    '<%= config.bin %> <%= command.id %>',
+    '<%= config.bin %> <%= command.id %> --clipboard',
+    '<%= config.bin %> <%= command.id %> --clipboard --quiet',
+    '<%= config.bin %> <%= command.id %> --json',
+  ]
 
   protected args!: Args<T>
   protected flags!: Flags<T>
