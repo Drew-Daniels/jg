@@ -5,6 +5,8 @@ import utils from '../../utils/index.js'
 export default class Id extends Command {
   static override description = 'Returns Jira Issue ID from current Git branch'
 
+  public static enableJsonFlag = true
+
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
   ]
@@ -15,7 +17,7 @@ export default class Id extends Command {
     quiet: Flags.boolean({ char: 'q', description: 'Suppress output' }),
   }
 
-  public async run(): Promise<void> {
+  public async run(): Promise<{ id: string }> {
     const { flags } = await this.parse(Id)
 
     if (flags.quiet && !flags.clipboard) {
@@ -32,6 +34,10 @@ export default class Id extends Command {
       }
     } else {
       this.log(jiraIssueId)
+    }
+
+    return {
+      id: jiraIssueId
     }
   }
 }
