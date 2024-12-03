@@ -11,13 +11,18 @@ export default class Url extends Command {
 
   static override enableJsonFlag = true
 
-  static override examples = ['<%= config.bin %> <%= command.id %>']
+  static override examples = [
+    '<%= config.bin %> <%= command.id %>',
+    '<%= config.bin %> <%= command.id %> --clipboard',
+    '<%= config.bin %> <%= command.id %> --clipboard --quiet',
+    '<%= config.bin %> <%= command.id %> --json',
+  ]
 
   static override flags = {
     clipboard: Flags.boolean({ char: 'c', default: false, description: 'Copy to clipboard' }),
     help: Flags.help({ char: 'h', description: 'Show help' }),
     markdown: Flags.boolean({ char: 'm', description: 'Get Markdown Link to Jira Issue' }),
-    quiet: Flags.boolean({ char: 'q', description: 'Suppress output' }),
+    quiet: Flags.boolean({ char: 'q', dependsOn: ['clipboard'], description: 'Suppress output' }),
   }
 
   readonly PREFIX = 'EMR'

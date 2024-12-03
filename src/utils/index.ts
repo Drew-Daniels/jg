@@ -58,6 +58,7 @@ async function getJiraIssueKeyFromCurrentBranch(): Promise<string> {
 }
 
 async function getLatestPrForJiraIssue(jiraIssueId: string): Promise<string[]> {
+  // TODO: filter on only opened PRs (state=open)
   const joinedResult = await runShellCmd(`gh search prs ${jiraIssueId} --assignee="@me" --json=number,title,url --match=title --limit=1 | jq -r '.[0] | [.number, .url] | join(" ")'`) as string
   if (joinedResult === ' ') {
     throw new Error(`No PR found for ${jiraIssueId} under your name`)

@@ -9,12 +9,15 @@ export default class Key extends Command {
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
+    '<%= config.bin %> <%= command.id %> --clipboard',
+    '<%= config.bin %> <%= command.id %> --clipboard --quiet',
+    '<%= config.bin %> <%= command.id %> --json',
   ]
 
   static override flags = {
     clipboard: Flags.boolean({ char: 'c', default: false, description: 'Copy to clipboard' }),
     help: Flags.help({ char: 'h', description: 'Show help' }),
-    quiet: Flags.boolean({ char: 'q', description: 'Suppress output' }),
+    quiet: Flags.boolean({ char: 'q', dependsOn: ['clipboard'], description: 'Suppress output' }),
   }
 
   public async run(): Promise<{ key: string }> {
