@@ -1,28 +1,17 @@
-import { Args, Command, Flags } from '@oclif/core'
+import { Args, Flags } from '@oclif/core'
 
+import { JgCommand } from '../../jg-command.js'
 import utils from '../../utils/index.js'
 
-export default class Url extends Command {
+export default class Url extends JgCommand<typeof Url> {
   static override args = {
     issueIdOrKey: Args.string({ description: 'Jira Issue ID or Key' }),
   }
 
   static override description = 'Returns a URL to a Jira Issue'
 
-  static override enableJsonFlag = true
-
-  static override examples = [
-    '<%= config.bin %> <%= command.id %>',
-    '<%= config.bin %> <%= command.id %> --clipboard',
-    '<%= config.bin %> <%= command.id %> --clipboard --quiet',
-    '<%= config.bin %> <%= command.id %> --json',
-  ]
-
   static override flags = {
-    clipboard: Flags.boolean({ char: 'c', default: false, description: 'Copy to clipboard' }),
-    help: Flags.help({ char: 'h', description: 'Show help' }),
     markdown: Flags.boolean({ char: 'm', description: 'Get Markdown Link to Jira Issue' }),
-    quiet: Flags.boolean({ char: 'q', dependsOn: ['clipboard'], description: 'Suppress output' }),
   }
 
   readonly PREFIX = 'EMR'
