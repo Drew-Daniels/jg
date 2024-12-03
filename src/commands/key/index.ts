@@ -5,7 +5,7 @@ import utils from '../../utils/index.js'
 export default class Key extends Command {
   static override description = 'Returns Jira Issue Key from current Git branch'
 
-  public static enableJsonFlag = true
+  static enableJsonFlag = true
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',

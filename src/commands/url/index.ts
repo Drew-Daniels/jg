@@ -9,6 +9,8 @@ export default class Url extends Command {
 
   static override description = 'Returns a URL to a Jira Issue'
 
+  static enableJsonFlag = true
+
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
