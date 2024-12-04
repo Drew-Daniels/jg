@@ -46,5 +46,12 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     })
     this.flags = flags as Flags<T>
     this.args = args as Args<T>
+    this.validateFlags()
+  }
+
+  public validateFlags() {
+    if (this.flags.quiet && !this.flags.clipboard) {
+      this.error('Cannot use --quiet without --clipboard')
+    }
   }
 }
