@@ -5,7 +5,7 @@ export default class Id extends JgCommand<typeof Id> {
   static override description = 'Returns Jira Issue ID from current Git branch'
 
   public async run(): Promise<{ id: string }> {
-    const { flags } = await this.parse(Id)
+    const { flags } = this
 
     if (flags.quiet && !flags.clipboard) {
       this.error('Cannot use --quiet without --clipboard')

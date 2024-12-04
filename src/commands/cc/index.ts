@@ -12,7 +12,7 @@ export default class Cc extends JgCommand<typeof Cc> {
   static override description = 'Generates a Conventional Commit Message from a Jira Issue ID/Key'
 
   public async run(): Promise<{ message: string }> {
-    const { args, flags } = await this.parse(Cc)
+    const { args, flags } = this
 
     if (flags.quiet && !flags.clipboard) {
       this.error('Cannot use --quiet without --clipboard')

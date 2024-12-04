@@ -11,7 +11,7 @@ export default class Bname extends JgCommand<typeof Bname> {
   static override description = 'Generates a Git branch name from a Jira Issue ID/Key'
 
   public async run(): Promise<{ bname: string }> {
-    const { args, flags } = await this.parse(Bname)
+    const { args, flags } = this
 
     if (flags.quiet && !flags.clipboard) {
       this.error('Cannot use --quiet without --clipboard')

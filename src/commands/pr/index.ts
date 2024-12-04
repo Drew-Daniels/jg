@@ -11,7 +11,7 @@ export default class Pr extends JgCommand<typeof Pr> {
   static override description = 'Generates a Slack Message with a Link to a Jira Issue and corresponding GitHub link'
 
   public async run(): Promise<{ message: string }> {
-    const { args, flags } = await this.parse(Pr)
+    const { args, flags } = this
 
     if (flags.quiet && !flags.clipboard) {
       this.error('Cannot use --quiet without --clipboard')

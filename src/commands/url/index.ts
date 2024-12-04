@@ -17,7 +17,7 @@ export default class Url extends JgCommand<typeof Url> {
   readonly PREFIX = 'EMR'
 
   public async run(): Promise<{ url: string }> {
-    const { args, flags } = await this.parse(Url)
+    const { PREFIX, args, flags } = this
 
     if (flags.quiet && !flags.clipboard) {
       this.error('Cannot use --quiet without --clipboard')
@@ -26,12 +26,12 @@ export default class Url extends JgCommand<typeof Url> {
     let jiraIssueKey;
 
     if (args.issueIdOrKey) {
-      if (new RegExp(`^${this.PREFIX}-\\d{5,}$`).test(args.issueIdOrKey)) {
+      if (new RegExp(`^${PREFIX}-\\d{5,}$`).test(args.issueIdOrKey)) {
         // Full Jira Issue Key specified, no changes necessary
         jiraIssueKey = args.issueIdOrKey
       } else if (/^\d{5,}$/.test(args.issueIdOrKey)) {
         // Only Jira Issue ID specified, add prefix
-        jiraIssueKey = `${this.PREFIX}-${args.issueIdOrKey}`
+        jiraIssueKey = `${PREFIX}-${args.issueIdOrKey}`
       } else {
         this.error(`Invalid Jira Issue ID: ${args.issueIdOrKey}`)
       }
