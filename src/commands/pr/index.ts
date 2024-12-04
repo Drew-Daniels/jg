@@ -18,7 +18,6 @@ export default class Pr extends JgCommand<typeof Pr> {
     const jiraIssueLink = await utils.getJiraIssueLink(issueKey)
     const jiraIssueMarkdownLink = `[${issueKey}](${jiraIssueLink})`
 
-    // TODO: Fix issue where a partial message is returned with Jira issue markdown link and empty Gh PR issue link (happens when there is a PR for a jira issue but it is now closed)
     const [ghPrNumber, ghPrLink] = await utils.getLatestPrForJiraIssue(issueKey)
     const ghPrMarkdownLink = `[#${ghPrNumber}](${ghPrLink})`
 
