@@ -13,10 +13,6 @@ export default class Bname extends JgCommand<typeof Bname> {
   public async run(): Promise<{ bname: string }> {
     const { args, flags } = this
 
-    if (flags.quiet && !flags.clipboard) {
-      this.error('Cannot use --quiet without --clipboard')
-    }
-
     const issueKey = args.issueIdOrKey ?? (await utils.getJiraIssueKeyFromCurrentBranch());
 
     const { scopes, summary, type } = await utils.getExtractedIssueData(issueKey)

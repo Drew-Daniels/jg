@@ -19,10 +19,6 @@ export default class Url extends JgCommand<typeof Url> {
   public async run(): Promise<{ url: string }> {
     const { PREFIX, args, flags } = this
 
-    if (flags.quiet && !flags.clipboard) {
-      this.error('Cannot use --quiet without --clipboard')
-    }
-
     let jiraIssueKey;
 
     if (args.issueIdOrKey) {

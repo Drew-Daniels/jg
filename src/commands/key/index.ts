@@ -7,10 +7,6 @@ export default class Key extends JgCommand<typeof Key> {
   public async run(): Promise<{ key: string }> {
     const { flags } = this
 
-    if (flags.quiet && !flags.clipboard) {
-      this.error('Cannot use --quiet without --clipboard')
-    }
-
     const jiraIssueKey = await utils.getJiraIssueKeyFromCurrentBranch()
 
     if (flags.clipboard) {

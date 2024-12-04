@@ -7,10 +7,6 @@ export default class Id extends JgCommand<typeof Id> {
   public async run(): Promise<{ id: string }> {
     const { flags } = this
 
-    if (flags.quiet && !flags.clipboard) {
-      this.error('Cannot use --quiet without --clipboard')
-    }
-
     const jiraIssueKey = await utils.getJiraIssueKeyFromCurrentBranch()
     const jiraIssueId = jiraIssueKey.split('-')[1]
 

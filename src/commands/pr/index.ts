@@ -13,10 +13,6 @@ export default class Pr extends JgCommand<typeof Pr> {
   public async run(): Promise<{ message: string }> {
     const { args, flags } = this
 
-    if (flags.quiet && !flags.clipboard) {
-      this.error('Cannot use --quiet without --clipboard')
-    }
-
     const issueKey = args.issueIdOrKey ?? (await utils.getJiraIssueKeyFromCurrentBranch());
 
     const jiraIssueLink = await utils.getJiraIssueLink(issueKey)

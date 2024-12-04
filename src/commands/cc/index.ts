@@ -14,10 +14,6 @@ export default class Cc extends JgCommand<typeof Cc> {
   public async run(): Promise<{ message: string }> {
     const { args, flags } = this
 
-    if (flags.quiet && !flags.clipboard) {
-      this.error('Cannot use --quiet without --clipboard')
-    }
-
     const issueKey = args.issueIdOrKey ?? (await utils.getJiraIssueKeyFromCurrentBranch());
 
     const { scopes, summary, type } = await utils.getExtractedIssueData(issueKey)
