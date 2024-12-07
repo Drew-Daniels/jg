@@ -11,11 +11,7 @@ export default class Find extends JgCommand<typeof Find> {
   static override description = 'Finds the latest GH PR for a Jira ticket'
 
   public async run(): Promise<{ link: string }> {
-    const { args } = this
-
-    const issueKey = args.issueIdOrKey ?? (await utils.getJiraIssueKeyFromCurrentBranch());
-
-    const { url } = await utils.getLatestPrForJiraIssue(issueKey)
+    const { url } = await utils.getLatestPrForJiraIssue(this.jiraIssueKey)
 
     this.handleLogging(url)
 

@@ -23,6 +23,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
 
   protected args!: Args<T>
   protected flags!: Flags<T>
+  protected jiraIssueKey!: string
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected async catch(err: { exitCode?: number } & Error): Promise<any> {
@@ -35,6 +36,18 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
   protected async finally(_: Error | undefined): Promise<any> {
     // called after run and catch regardless of whether or not the command errored
     return super.finally(_)
+  }
+
+  public async getJiraIssueFromArgsOrCurrentBranch(): Promise<string> {
+    return new Promise((resolve) => {
+      if (this.args.issueIdOrKey) {
+        resolve(this.args.issueIdOrKey)
+      } else {
+        utils.getJiraIssueKeyFromCurrentBranch().then((jiraIssueKey) => {
+          resolve(jiraIssueKey)
+        })
+      }
+    })
   }
 
   public handleLogging(message: string) {
@@ -60,6 +73,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     this.flags = flags as Flags<T>
     this.args = args as Args<T>
     this.validateFlags()
+    this.jiraIssueKey = await this.getJiraIssueFromArgsOrCurrentBranch()
   }
 
   public validateFlags() {

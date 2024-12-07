@@ -11,14 +11,10 @@ export default class Pr extends JgCommand<typeof Pr> {
   static override description = 'Generates a Slack Message with a Link to a Jira Issue and corresponding GitHub link'
 
   public async run(): Promise<{ message: string }> {
-    const { args } = this
+    const jiraIssueLink = utils.getJiraIssueLink(this.jiraIssueKey)
+    const jiraIssueMarkdownLink = `[${this.jiraIssueKey}](${jiraIssueLink})`
 
-    const issueKey = args.issueIdOrKey ?? (await utils.getJiraIssueKeyFromCurrentBranch());
-
-    const jiraIssueLink = utils.getJiraIssueLink(issueKey)
-    const jiraIssueMarkdownLink = `[${issueKey}](${jiraIssueLink})`
-
-    const { number, url } = await utils.getLatestPrForJiraIssue(issueKey)
+    const { number, url } = await utils.getLatestPrForJiraIssue(this.jiraIssueKey)
     const ghPrMarkdownLink = `[#${number}](${url})`
 
     const slackMessage = `PR for ${jiraIssueMarkdownLink}: ${ghPrMarkdownLink}`

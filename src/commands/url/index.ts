@@ -17,23 +17,7 @@ export default class Url extends JgCommand<typeof Url> {
   readonly PREFIX = 'EMR'
 
   public async run(): Promise<{ url: string }> {
-    const { PREFIX, args, flags } = this
-
-    let jiraIssueKey;
-
-    if (args.issueIdOrKey) {
-      if (new RegExp(`^${PREFIX}-\\d{5,}$`).test(args.issueIdOrKey)) {
-        // Full Jira Issue Key specified, no changes necessary
-        jiraIssueKey = args.issueIdOrKey
-      } else if (/^\d{5,}$/.test(args.issueIdOrKey)) {
-        // Only Jira Issue ID specified, add prefix
-        jiraIssueKey = `${PREFIX}-${args.issueIdOrKey}`
-      } else {
-        this.error(`Invalid Jira Issue ID: ${args.issueIdOrKey}`)
-      }
-    } else {
-      jiraIssueKey = await utils.getJiraIssueKeyFromCurrentBranch()
-    }
+    const { flags, jiraIssueKey } = this
 
     // links
     const jiraIssue = utils.getJiraIssueLink(jiraIssueKey)
