@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/jgit.schema.json",
+  "$id": "https://github.com/Drew-Daniels/jg/schema.json",
   "title": "JGit",
   "description": "JGit configuration schema",
   "type": "object",
