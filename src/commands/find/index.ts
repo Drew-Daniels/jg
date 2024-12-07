@@ -20,7 +20,7 @@ export default class Find extends JgCommand<typeof Find> {
     if (flags.clipboard) {
       utils.copyToClipboard(ghPrLink)
       if (!flags.quiet) {
-        this.log(`Copied Branch Name to clipboard: ${ghPrLink}`)
+        this.log(`Copied GitHub PR link to clipboard: ${ghPrLink}`)
       }
     } else {
       this.log(ghPrLink)
