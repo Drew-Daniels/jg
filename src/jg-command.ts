@@ -62,6 +62,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     return readJSON(path.join(this.config.configDir, 'config.json'))
   }
 
+  // TODO: Codesmell, this isn't just logging but copying to system clipboard, so might need to decouple this a bit
   public handleLogging(message: string) {
     if (this.flags.clipboard) {
       utils.copyToClipboard(message)
