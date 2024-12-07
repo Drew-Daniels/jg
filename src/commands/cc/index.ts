@@ -12,7 +12,7 @@ export default class Cc extends JgCommand<typeof Cc> {
   static override description = 'Generates a Conventional Commit Message from a Jira Issue ID/Key'
 
   public async run(): Promise<{ message: string }> {
-    const { args, flags } = this
+    const { args } = this
 
     const issueKey = args.issueIdOrKey ?? (await utils.getJiraIssueKeyFromCurrentBranch());
 
@@ -20,14 +20,7 @@ export default class Cc extends JgCommand<typeof Cc> {
     const issueScope = scopes.length > 0 ? `(${scopes.join(':')})` : ''
 
     const message = `${type === 'Bug' ? 'fix' : 'feat'}${issueScope}: ${summary}`
-    if (flags.clipboard) {
-      utils.copyToClipboard(message)
-      if (!flags.quiet) {
-        this.log(`Copied Conventional Commit Message to clipboard: ${message}`)
-      }
-    } else {
-      this.log(message)
-    }
+    this.handleLogging(message)
 
     return {
       message

@@ -21,7 +21,7 @@ describe('key', () => {
     it('--clipboard prints the Jira Issue Key and copies it to the clipboard', async () => {
       const { stdout } = await runCommand('key --clipboard')
       expect(copyToClipboardStub.calledOnce).to.be.true
-      expect(stdout).to.equal('Copied Jira Issue Key to clipboard: EMR-12345\n')
+      expect(stdout).to.equal('Copied to clipboard: EMR-12345\n')
     })
     it('--clipboard && --quiet copies the Jira Issue Key to the clipboard and suppresses output', async () => {
       const { stdout } = await runCommand('key --quiet --clipboard')

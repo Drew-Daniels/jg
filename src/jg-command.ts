@@ -1,5 +1,7 @@
 import { Command, Flags, Interfaces } from '@oclif/core'
 
+import utils from './utils/index.js'
+
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<T['flags'] & typeof JgCommand['baseFlags']>
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
 
@@ -33,6 +35,17 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
   protected async finally(_: Error | undefined): Promise<any> {
     // called after run and catch regardless of whether or not the command errored
     return super.finally(_)
+  }
+
+  public handleLogging(message: string) {
+    if (this.flags.clipboard) {
+      utils.copyToClipboard(message)
+      if (!this.flags.quiet) {
+        this.log(`Copied to clipboard: ${message}`)
+      }
+    } else {
+      this.log(message)
+    }
   }
 
   public async init(): Promise<void> {

@@ -1,69 +1,50 @@
 import clipboard from 'clipboardy'
 import { Issue } from "jira.js/out/version3/models/issue.js";
-import { spawn } from 'node:child_process'
 
+import { GHClient } from "../gh-client/index.js";
+import { GitClient } from '../git-client/index.js';
 import { JiraClient } from "../jira-client/index.js";
 
 export default {
   copyToClipboard,
-  fetchIssue,
   getExtractedIssueData,
-  getIssueScopeAndSummary,
-  getIssueType,
   getJiraIssueKeyFromCurrentBranch,
   getJiraIssueLink,
   getLatestPrForJiraIssue,
-  getNumIssueScopes,
-  runShellCmd
 }
 
-function runShellCmd(cmd: string, args: string[] = []): Promise<Record<string, unknown> | string> {
-  return new Promise((resolve, reject) => {
-    const child = spawn(cmd, args, { shell: true, stdio: 'pipe' })
-
-    child.stdout.on('data', (data) => {
-      resolve(Buffer.from(data, 'utf8').toString())
-    })
-
-    child.on('close', (code) => {
-      resolve(`Command exited with code ${code}`)
-    })
-
-    child.stderr.on('data', (data) => {
-      reject(Buffer.from(data, 'utf8').toString())
-    })
-  })
-}
-
-/**
- * @param identifier - Jira Issue ID or Key
- * @returns Jira Issue Link
- */
-async function getJiraIssueLink(identifier: string): Promise<string> {
-  const link = await runShellCmd(`jira open ${identifier} -n | tr -d '\n'`) as string
-  return link
+function getJiraIssueLink(issueKey: string): string {
+  return `${process.env.JIRA_API_HOSTNAME}/browse/${issueKey}`
 }
 
 async function getJiraIssueKeyFromCurrentBranch(): Promise<string> {
-  const jiraIssueKey = await runShellCmd('git branch --show-current | cut -d / -f2- | cut -d / -f1 | tr -d "[:space:]" | tr a-z A-Z') as string
-  let jiraIssueId;
+  const branchSummaryResult = await GitClient.branch()
+  const { current } = branchSummaryResult
+  const split = current.split('/')
+  const jiraIssueKey = split[1]
+  const formattedJiraIssueKey = jiraIssueKey
+    .toUpperCase()
   // TODO: Check if Jira Issue Key includes prefix
-  if (/^[A-Z]+-\d{5,}$/.test(jiraIssueKey)) {
-    jiraIssueId = jiraIssueKey.split('-')[1]
-  } else {
+  if (!(/^[A-Z]+-\d{5,}$/.test(formattedJiraIssueKey))) {
     throw new Error(`Not a Jira Issue Key: ${jiraIssueKey}`)
   }
 
-  return jiraIssueId
+  return formattedJiraIssueKey
 }
 
-async function getLatestPrForJiraIssue(jiraIssueId: string): Promise<string[]> {
-  const joinedResult = await runShellCmd(`gh search prs ${jiraIssueId} --assignee="@me" --state=open --json=number,title,url --match=title --limit=1 | jq -r '.[0] | [.number, .url] | join(" ")'`) as string
-  if (joinedResult === ' ') {
-    throw new Error(`No Open PR found for ${jiraIssueId} under your name`)
+// TODO: Figure out how to enable users to specify their org(s) to search for issues under using a configuration file:
+// Add this to q: org:<org-name>
+async function getLatestPrForJiraIssue(jiraIssueIdOrKey: string): Promise<{ number: number, url: string }> {
+  const issues = await GHClient.rest.search.issuesAndPullRequests({
+    q: `type:pr is:open ${jiraIssueIdOrKey} in:title assignee:@me`,
+  })
+  if (issues.data.total_count === 0) {
+    throw new Error(`No Open PR found for ${jiraIssueIdOrKey} under your name`)
   }
 
-  return joinedResult.replaceAll('\n', '').split(' ')
+  const { number, url } = issues.data.items[0]
+
+  return { number, url }
 }
 
 async function fetchIssue(issueIdOrKey: string): Promise<Issue> {

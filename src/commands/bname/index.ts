@@ -11,7 +11,7 @@ export default class Bname extends JgCommand<typeof Bname> {
   static override description = 'Generates a Git branch name from a Jira Issue ID/Key'
 
   public async run(): Promise<{ bname: string }> {
-    const { args, flags } = this
+    const { args } = this
 
     const issueKey = args.issueIdOrKey ?? (await utils.getJiraIssueKeyFromCurrentBranch());
 
@@ -26,14 +26,7 @@ export default class Bname extends JgCommand<typeof Bname> {
     // TODO: Add support for just passing jira issue ID, not the entire key
     // TODO: Limit length
     const message = `${type === 'Bug' ? 'fix' : 'feat'}/${issueKey}/${issueScope}-${issueSummary}`
-    if (flags.clipboard) {
-      utils.copyToClipboard(message)
-      if (!flags.quiet) {
-        this.log(`Copied Branch Name to clipboard: ${message}`)
-      }
-    } else {
-      this.log(message)
-    }
+    this.handleLogging(message)
 
     return {
       bname: message,

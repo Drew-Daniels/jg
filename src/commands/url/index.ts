@@ -36,31 +36,18 @@ export default class Url extends JgCommand<typeof Url> {
     }
 
     // links
-    const jiraIssue = await utils.getJiraIssueLink(jiraIssueKey)
+    const jiraIssue = utils.getJiraIssueLink(jiraIssueKey)
     if (flags.markdown) {
       const markdownLink = `[${jiraIssueKey}](${jiraIssue})`
-      if (flags.clipboard) {
-        utils.copyToClipboard(markdownLink)
-        if (!flags.quiet) {
-          this.log(`Copied Jira Issue Markdown Link to clipboard: ${markdownLink}`)
-        }
-      } else {
-        this.log(`${markdownLink}`)
-      }
+
+      this.handleLogging(markdownLink)
 
       return {
         url: markdownLink
       }
     }
 
-    if (flags.clipboard) {
-      utils.copyToClipboard(jiraIssue)
-      if (!flags.quiet) {
-        this.log(`Copied Jira Issue URL to clipboard: ${jiraIssue}`)
-      }
-    } else {
-      this.log(`${jiraIssue}`)
-    }
+    this.handleLogging(jiraIssue)
 
     return {
       url: jiraIssue

@@ -11,8 +11,12 @@
     "@oclif/core": "^4",
     "@oclif/plugin-help": "^6",
     "@oclif/plugin-plugins": "^5",
+    "@octokit/core": "^6.1.2",
+    "@octokit/plugin-rest-endpoint-methods": "^13.2.6",
     "clipboardy": "^4.0.0",
-    "jira.js": "^4.0.2"
+    "jira.js": "^4.0.2",
+    "node-jq": "^6.0.1",
+    "simple-git": "^3.27.0"
   },
   "devDependencies": {
     "@oclif/prettier-config": "^0.2.1",

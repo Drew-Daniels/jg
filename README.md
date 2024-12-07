@@ -153,10 +153,10 @@ EXAMPLES
   ZYX-54321
 
   $ jg url ZYX-54321 -c
-  Copied Jira Issue url to clipboard: <YOUR-JIRA-HOSTNAME>/browse/ZYX-54321
+  Copied to Clipboard: <YOUR-JIRA-HOSTNAME>/browse/ZYX-54321
 
   $ jg url ZYX-54321 -m
-  Copied Jira Issue Markdown Link to clipboard: [ZYX-54321](<YOUR-JIRA-HOSTNAME>/browse/ZYX-54321)
+  Copied to Clipboard: [ZYX-54321](<YOUR-JIRA-HOSTNAME>/browse/ZYX-54321)
 ```
 
 _See code: [src/commands/url/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/url/index.ts)_
@@ -206,7 +206,7 @@ EXAMPLES
   fix/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
 
   $ jg bname XYZ-12345 -c
-  Copied Git Branch Name to Clipboard:
+  Copied to Clipboard:
     fix/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
   $ git switch <CTRL-V>
 ```
@@ -235,7 +235,7 @@ EXAMPLES
   PR for [XYZ-12345](<YOUR-JIRA-HOSTNAME>/browse/XYZ-12345): [#16303](https://github.com/<REPO-OWNER>/<REPO-NAME>/pull/16303)
 
   $ jg pr -c
-  Copied Slack Message to Clipboard: PR for [XYZ-12345](<YOUR-JIRA-HOSTNAME>/browse/XYZ-12345): [#16303](https://github.com/<REPO-OWNER>/<REPO-NAME>/pull/16303)
+  Copied to Clipboard: PR for [XYZ-12345](<YOUR-JIRA-HOSTNAME>/browse/XYZ-12345): [#16303](https://github.com/<REPO-OWNER>/<REPO-NAME>/pull/16303)
 ```
 
 _See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/pr/index.ts)_
