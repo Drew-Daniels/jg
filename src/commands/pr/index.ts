@@ -1,4 +1,5 @@
 import { Args } from '@oclif/core'
+import { oraPromise } from 'ora'
 
 import { JgCommand } from '../../jg-command.js'
 import utils from '../../utils/index.js'
@@ -14,7 +15,7 @@ export default class Pr extends JgCommand<typeof Pr> {
     const jiraIssueLink = utils.getJiraIssueLink(this.jiraIssueKey)
     const jiraIssueMarkdownLink = `[${this.jiraIssueKey}](${jiraIssueLink})`
 
-    const { number, url } = await utils.getLatestPrForJiraIssue(this.jiraIssueKey)
+    const { number, url } = await oraPromise(utils.getLatestPrForJiraIssue(this.jiraIssueKey), { prefixText: 'Fetching PR' })
     const ghPrMarkdownLink = `[#${number}](${url})`
 
     const slackMessage = `PR for ${jiraIssueMarkdownLink}: ${ghPrMarkdownLink}`

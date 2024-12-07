@@ -1,4 +1,10 @@
 import { Command, Flags, Interfaces } from '@oclif/core'
+// eslint-disable-next-line import/default
+import pkg from 'fs-extra'
+import path from 'node:path'
+import { oraPromise } from 'ora'
+
+const { readJSON } = pkg
 
 import utils from './utils/index.js'
 
@@ -24,6 +30,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
   protected args!: Args<T>
   protected flags!: Flags<T>
   protected jiraIssueKey!: string
+  protected userConfig!: Record<string, unknown>
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected async catch(err: { exitCode?: number } & Error): Promise<any> {
@@ -38,6 +45,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     return super.finally(_)
   }
 
+  // TODO: Need to figure out handling for when not in a git repo, or on a branch does not match expected format
   public async getJiraIssueFromArgsOrCurrentBranch(): Promise<string> {
     return new Promise((resolve) => {
       if (this.args.issueIdOrKey) {
@@ -48,6 +56,10 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
         })
       }
     })
+  }
+
+  public async getUserConfig() {
+    return readJSON(path.join(this.config.configDir, 'config.json'))
   }
 
   public handleLogging(message: string) {
@@ -73,7 +85,8 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     this.flags = flags as Flags<T>
     this.args = args as Args<T>
     this.validateFlags()
-    this.jiraIssueKey = await this.getJiraIssueFromArgsOrCurrentBranch()
+    this.userConfig = await this.getUserConfig()
+    this.jiraIssueKey = await oraPromise(this.getJiraIssueFromArgsOrCurrentBranch(), { prefixText: 'Fetching Jira Issue' })
   }
 
   public validateFlags() {

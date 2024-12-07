@@ -14,14 +14,17 @@
     "@octokit/core": "^6.1.2",
     "@octokit/plugin-rest-endpoint-methods": "^13.2.6",
     "clipboardy": "^4.0.0",
+    "fs-extra": "^11.2.0",
     "jira.js": "^4.0.2",
     "node-jq": "^6.0.1",
+    "ora": "^8.1.1",
     "simple-git": "^3.27.0"
   },
   "devDependencies": {
     "@oclif/prettier-config": "^0.2.1",
     "@oclif/test": "^4",
     "@types/chai": "^4",
+    "@types/fs-extra": "^11.0.4",
     "@types/mocha": "^10",
     "@types/node": "^18",
     "@types/sinon": "^17.0.3",
