@@ -33,5 +33,6 @@
   "required": [
     "jira",
     "github"
-  ]
+  ],
+  "additionalProperties": false
 }
