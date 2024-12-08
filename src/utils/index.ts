@@ -86,11 +86,19 @@ async function getExtractedIssueData(issueIdOrKey: string): Promise<ExtractedIss
   const issue = await fetchIssue(issueIdOrKey)
   const type = getIssueType(issue)
   const issueScopeAndSummary = getIssueScopeAndSummary(issue)
+    .replaceAll('->', ':')
+
   const lastScopeIndex = issueScopeAndSummary.lastIndexOf(':')
+
   const scopesString = lastScopeIndex === -1 ? '' : `${issueScopeAndSummary.slice(0, Math.max(0, lastScopeIndex))}`
-    .replaceAll(/\s+/g, '')
+    .replaceAll(/\s+/g, ' ')
+    .replaceAll(/\s*:\s*/g, ':')
+    .replaceAll(/\s+$/g, '')
+
   const summary = issueScopeAndSummary.slice(Math.max(0, lastScopeIndex + 1))
     .replaceAll(/^\s+/g, '')
+    .replaceAll(/\s+$/g, '')
+
   const scopes = scopesString.split(':').filter(Boolean)
 
   return {

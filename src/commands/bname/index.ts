@@ -14,23 +14,39 @@ export default class Bname extends JgCommand<typeof Bname> {
   public async run(): Promise<{ bname: string }> {
     const { scopes, summary, type } = await oraPromise(utils.getExtractedIssueData(this.jiraIssueKey), { text: 'Fetching Jira Issue...' })
 
-    const issueScope = scopes.length > 0 ? `${scopes.join('-').toUpperCase()}-` : ''
+    let issueScope = ''
+    if (scopes.length > 0) {
+      issueScope = scopes
+        .join('-')
+        .toUpperCase()
+        .replaceAll(/\s+/g, '-')
+        .replaceAll("'", '')
+        .replaceAll('"', '')
+      issueScope += '-'
+    }
 
     const issueSummary = summary
       .replaceAll('/', ' ')
       .replaceAll('(', '')
       .replaceAll(')', '')
       .replaceAll('.', '')
+      .replaceAll(',', '')
+      .replaceAll("'", '')
+      .replaceAll('"', '')
+      .replaceAll('!', '')
+      .replaceAll('?', '')
+      .replaceAll(';', '')
+      .replaceAll(/\s*>\s*/g, '-')
       .replaceAll(/\s/g, '-')
       .toLowerCase()
 
     // TODO: Add support for just passing jira issue ID, not the entire key
-    // TODO: Limit length
-    const message = `${type === 'Bug' ? 'fix' : 'feat'}/${this.jiraIssueKey}/${issueScope}${issueSummary}`
-    this.handleLogging(message)
+    let branchName = `${type === 'Bug' ? 'fix' : 'feat'}/${this.jiraIssueKey}/${issueScope}${issueSummary}`
+    branchName = branchName.slice(0, 110)
+    this.handleLogging(branchName)
 
     return {
-      bname: message,
+      bname: branchName,
     }
   }
 }
