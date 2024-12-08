@@ -1,7 +1,7 @@
 {
   "name": "jgit",
   "description": "Utility functions for Jira and Git",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Drew Daniels",
   "bin": {
     "jg": "./bin/run.js"
