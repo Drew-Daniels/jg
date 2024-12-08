@@ -8,25 +8,24 @@ Utility functions for Jira and Git
 
 <!-- toc -->
 
-- [Dependencies](#dependencies)
 - [Setup](#setup)
 - [Usage](#usage)
 - [Commands](#commands)
 <!-- tocstop -->
 
-# Dependencies
-
-- [gh](https://github.com/cli/cli) - Used for interfacing with the GitHub API
-- [jira.js](https://github.com/MrRefactoring/jira.js) - Used for interfacing with the Jira API
-- [clipboardy](https://github.com/sindresorhus/clipboardy) - Used for copying to clipboard (cross-platform)
-
 # Setup
 
-## GitHub CLI
+## GitHub API Auth
 
-You will need to install the `gh` CLI and run `gh auth login` to authenticate with GitHub
+You will need to export a GitHub OAuth Token to authenticate with the GitHub API.
 
-## Jira API
+https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#about-personal-access-tokens
+
+```sh
+export GITHUB_OAUTH_TOKEN="YOUR_GITHUB_OAUTH_TOKEN"
+```
+
+## Jira API Auth
 
 You will need the following env vars set in your shell to authenticate with the Jira API:
 
