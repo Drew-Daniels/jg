@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/commands/hello/index.ts","./src/commands/hello/world.ts"],"version":"5.7.2"}
+{"root":["./src/index.ts","./src/jg-command.ts","./src/commands/bname/index.ts","./src/commands/cc/index.ts","./src/commands/find/index.ts","./src/commands/id/index.ts","./src/commands/key/index.ts","./src/commands/pr/index.ts","./src/commands/url/index.ts","./src/gh-client/index.ts","./src/git-client/index.ts","./src/jira-client/index.ts","./src/utils/index.ts"],"version":"5.7.2"}
