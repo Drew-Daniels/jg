@@ -2,7 +2,6 @@ import { Args } from '@oclif/core'
 import { oraPromise } from 'ora'
 
 import { JgCommand } from '../../jg-command.js'
-import utils from '../../utils/index.js'
 
 export default class Bname extends JgCommand<typeof Bname> {
   static override args = {
@@ -12,7 +11,7 @@ export default class Bname extends JgCommand<typeof Bname> {
   static override description = 'Generates a Git branch name from a Jira Issue ID/Key'
 
   public async run(): Promise<{ bname: string }> {
-    const { scopes, summary, type } = await oraPromise(utils.getExtractedIssueData(this.jiraIssueKey), { text: 'Fetching Jira Issue...' })
+    const { scopes, summary, type } = await oraPromise(this.getExtractedIssueData(this.jiraIssueKey), { text: 'Fetching Jira Issue...' })
 
     let issueScope = ''
     if (scopes.length > 0) {

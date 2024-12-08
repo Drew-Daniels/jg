@@ -1,7 +1,6 @@
 import { Args, Flags } from '@oclif/core'
 
 import { JgCommand } from '../../jg-command.js'
-import utils from '../../utils/index.js'
 
 export default class Url extends JgCommand<typeof Url> {
   static override args = {
@@ -18,7 +17,7 @@ export default class Url extends JgCommand<typeof Url> {
     const { flags, jiraIssueKey } = this
 
     // links
-    const jiraIssue = utils.getJiraIssueLink(jiraIssueKey)
+    const jiraIssue = this.getJiraIssueLink(jiraIssueKey)
     if (flags.markdown) {
       const markdownLink = `[${jiraIssueKey}](${jiraIssue})`
 

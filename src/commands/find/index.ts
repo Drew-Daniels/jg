@@ -2,7 +2,6 @@ import { Args } from '@oclif/core'
 import { oraPromise } from 'ora'
 
 import { JgCommand } from '../../jg-command.js'
-import utils from '../../utils/index.js'
 
 export default class Find extends JgCommand<typeof Find> {
   static override args = {
@@ -16,7 +15,7 @@ export default class Find extends JgCommand<typeof Find> {
   }
 
   public async run(): Promise<{ link: null | string }> {
-    const result = await oraPromise(utils.getLatestPrForJiraIssue(this.jiraIssueKey), { prefixText: 'Fetching PR' })
+    const result = await oraPromise(this.getLatestPrForJiraIssue(this.jiraIssueKey), { prefixText: 'Fetching PR' })
     const { url } = result
 
     if (url) {

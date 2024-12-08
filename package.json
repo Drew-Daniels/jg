@@ -16,7 +16,6 @@
     "clipboardy": "^4.0.0",
     "fs-extra": "^11.2.0",
     "jira.js": "^4.0.2",
-    "node-jq": "^6.0.1",
     "ora": "^8.1.1",
     "simple-git": "^3.27.0"
   },
@@ -28,7 +27,6 @@
     "@types/mocha": "^10",
     "@types/node": "^18",
     "@types/ora": "^3.2.0",
-    "@types/sinon": "^17.0.3",
     "chai": "^4",
     "eslint": "^8",
     "eslint-config-oclif": "^5",
@@ -37,7 +35,6 @@
     "mocha": "^10",
     "oclif": "^4",
     "shx": "^0.3.3",
-    "sinon": "^19.0.2",
     "ts-node": "^10",
     "typescript": "^5"
   },
@@ -78,7 +75,7 @@
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "pnpm run lint",
     "prepack": "oclif manifest && oclif readme",
-    "test": "mocha --require mocha-hooks.js --forbid-only \"test/**/*.test.ts\" --parallel",
+    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif readme && git add README.md"
   },
   "types": "dist/index.d.ts",
