@@ -14,8 +14,6 @@ export default class Url extends JgCommand<typeof Url> {
     markdown: Flags.boolean({ char: 'm', description: 'Get Markdown Link to Jira Issue' }),
   }
 
-  readonly PREFIX = 'EMR'
-
   public async run(): Promise<{ url: string }> {
     const { flags, jiraIssueKey } = this
 
