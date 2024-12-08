@@ -11,10 +11,19 @@ export default class Find extends JgCommand<typeof Find> {
 
   static override description = 'Finds the latest GH PR for a Jira ticket'
 
-  public async run(): Promise<{ link: string }> {
-    const { url } = await oraPromise(utils.getLatestPrForJiraIssue(this.jiraIssueKey), { prefixText: 'Fetching PR' })
+  async catch(error: Error) {
+    this.log(error.message)
+  }
 
-    this.handleLogging(url)
+  public async run(): Promise<{ link: null | string }> {
+    const result = await oraPromise(utils.getLatestPrForJiraIssue(this.jiraIssueKey), { prefixText: 'Fetching PR' })
+    const { url } = result
+
+    if (url) {
+      this.handleLogging(url)
+    } else {
+      this.log(`No PR found for ${this.jiraIssueKey} under your name`)
+    }
 
     return {
       link: url,

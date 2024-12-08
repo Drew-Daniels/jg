@@ -7,10 +7,13 @@ Utility functions for Jira and Git
 [![Downloads/week](https://img.shields.io/npm/dw/jgit.svg)](https://npmjs.org/package/jgit)
 
 <!-- toc -->
-
-- [Setup](#setup)
-- [Usage](#usage)
-- [Commands](#commands)
+* [`jgit`](#jgit)
+* [Setup](#setup)
+* [Your Organization's Jira instance](#your-organizations-jira-instance)
+* [Your Jira API token https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/](#your-jira-api-token-httpssupportatlassiancomatlassian-accountdocsmanage-api-tokens-for-your-atlassian-account)
+* [Your Organization's email address - Ex. <firstname><lastname>@<organization>.com](#your-organizations-email-address---ex-firstnamelastnameorganizationcom)
+* [Usage](#usage)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # Setup
@@ -41,203 +44,142 @@ export JIRA_API_EMAIL="YOUR_JIRA_EMAIL"
 # Usage
 
 <!-- usage -->
-
 ```sh-session
-$ npm install -g jg
+$ npm install -g jgit
 $ jg COMMAND
 running command...
 $ jg (--version)
-jg/0.0.0 darwin-arm64 node-v22.5.1
+jgit/0.0.2 darwin-arm64 node-v22.5.1
 $ jg --help [COMMAND]
 USAGE
   $ jg COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
+* [`jg bname [ISSUEIDORKEY]`](#jg-bname-issueidorkey)
+* [`jg cc [ISSUEIDORKEY]`](#jg-cc-issueidorkey)
+* [`jg find [ISSUEIDORKEY]`](#jg-find-issueidorkey)
+* [`jg help [COMMAND]`](#jg-help-command)
+* [`jg id`](#jg-id)
+* [`jg key`](#jg-key)
+* [`jg plugins`](#jg-plugins)
+* [`jg plugins add PLUGIN`](#jg-plugins-add-plugin)
+* [`jg plugins:inspect PLUGIN...`](#jg-pluginsinspect-plugin)
+* [`jg plugins install PLUGIN`](#jg-plugins-install-plugin)
+* [`jg plugins link PATH`](#jg-plugins-link-path)
+* [`jg plugins remove [PLUGIN]`](#jg-plugins-remove-plugin)
+* [`jg plugins reset`](#jg-plugins-reset)
+* [`jg plugins uninstall [PLUGIN]`](#jg-plugins-uninstall-plugin)
+* [`jg plugins unlink [PLUGIN]`](#jg-plugins-unlink-plugin)
+* [`jg plugins update`](#jg-plugins-update)
+* [`jg pr [ISSUEIDORKEY]`](#jg-pr-issueidorkey)
+* [`jg url [ISSUEIDORKEY]`](#jg-url-issueidorkey)
 
-- [`jg id`](#jg-id)
-- [`jg key`](#jg-key)
-- [`jg url`](#jg-url)
-- [`jg cc`](#jg-cc)
-- [`jg bname`](#jg-bname)
-- [`jg pr`](#jg-pr)
-- [`jg help [COMMAND]`](#jg-help-command)
-- [`jg plugins`](#jg-plugins)
-- [`jg plugins add PLUGIN`](#jg-plugins-add-plugin)
-- [`jg plugins:inspect PLUGIN...`](#jg-pluginsinspect-plugin)
-- [`jg plugins install PLUGIN`](#jg-plugins-install-plugin)
-- [`jg plugins link PATH`](#jg-plugins-link-path)
-- [`jg plugins remove [PLUGIN]`](#jg-plugins-remove-plugin)
-- [`jg plugins reset`](#jg-plugins-reset)
-- [`jg plugins uninstall [PLUGIN]`](#jg-plugins-uninstall-plugin)
-- [`jg plugins unlink [PLUGIN]`](#jg-plugins-unlink-plugin)
-- [`jg plugins update`](#jg-plugins-update)
-
-## `jg id`
-
-Get Jira Issue ID from current Git branch
-
-```
-USAGE
-  $ jg id [-c] [-h] [-q]
-
-FLAGS
-  -c, --clipboard  (optional) Copy to clipboard
-  -h, --help       (optional) Show help
-  -q, --quiet      (optional) Suppress output
-
-DESCRIPTION
-  Returns Jira Issue ID from current Git branch
-
-EXAMPLES
-  $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
-  $ jg id
-  12345
-```
-
-_See code: [src/commands/id/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/id/index.ts)_
-
-## `jg key`
-
-Get Jira Issue key from current Git branch
-
-```
-USAGE
-  $ jg key [-c] [-h] [-q]
-
-FLAGS
-  -c, --clipboard  (optional) Copy to clipboard
-  -h, --help       (optional) Show help
-  -q, --quiet      (optional) Suppress output
-
-DESCRIPTION
-  Returns Jira Issue Key from current Git branch
-
-EXAMPLES
-  $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
-  $ jg key
-  XYZ-12345
-```
-
-_See code: [src/commands/key/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/key/index.ts)_
-
-## `jg url`
-
-Returns a URL to a Jira Issue
-
-```
-USAGE
-  $ jg url [ISSUEIDORKEY] [-c] [-h] [-m] [-q]
-
-FLAGS
-  -c, --clipboard  (optional) Copy to clipboard
-  -h, --help       (optional) Show help
-  -m, --markdown   (optional) Get Markdown Link to Jira Issue
-  -q, --quiet      (optional) Suppress output
-
-DESCRIPTION
-  Returns a URL to a Jira Issue
-
-EXAMPLES
-  $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
-  $ jg url
-  XYZ-12345
-
-  $ jg url ZYX-54321
-  ZYX-54321
-
-  $ jg url ZYX-54321 -c
-  Copied to Clipboard: <YOUR-JIRA-HOSTNAME>/browse/ZYX-54321
-
-  $ jg url ZYX-54321 -m
-  Copied to Clipboard: [ZYX-54321](<YOUR-JIRA-HOSTNAME>/browse/ZYX-54321)
-```
-
-_See code: [src/commands/url/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/url/index.ts)_
-
-## `jg cc`
-
-Generates a Conventional Commit Message from a Jira Issue ID/Key
-
-```
-USAGE
-  $ jg cc [ISSUEIDORKEY] [-c] [-h] [-q]
-
-FLAGS
-  -c, --clipboard  (optional) Copy to clipboard
-  -h, --help       (optional) Show help
-  -q, --quiet      (optional) Suppress output
-
-DESCRIPTION
-  Generates a Conventional Commit Message from a Jira Issue ID/Key
-
-EXAMPLES
-  $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
-  $ jg cc
-  feat(NOTIFICATIONS): Add Profile Update Notification
-```
-
-_See code: [src/commands/cc/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/cc/index.ts)_
-
-## `jg bname`
+## `jg bname [ISSUEIDORKEY]`
 
 Generates a Git branch name from a Jira Issue ID/Key
 
 ```
 USAGE
-  $ jg bname [ISSUEIDORKEY] [-c] [-h] [-q]
+  $ jg bname [ISSUEIDORKEY] [--json] [-h] [-q -c]
+
+ARGUMENTS
+  ISSUEIDORKEY  Jira Issue ID or Key
 
 FLAGS
-  -c, --clipboard  (optional) Copy to clipboard
-  -h, --help       (optional) Show help
-  -q, --quiet      (optional) Suppress output
+  -c, --clipboard  Copy to clipboard
+  -h, --help       Show help
+  -q, --quiet      Suppress output
+
+GLOBAL FLAGS
+  --json  Format output as json.
 
 DESCRIPTION
   Generates a Git branch name from a Jira Issue ID/Key
 
 EXAMPLES
-  $ jg bname XYZ-12345
-  fix/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
+  $ jg bname
 
-  $ jg bname XYZ-12345 -c
-  Copied to Clipboard:
-    fix/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
-  $ git switch <CTRL-V>
+  $ jg bname --clipboard
+
+  $ jg bname --clipboard --quiet
+
+  $ jg bname --json
 ```
 
-_See code: [src/commands/bname/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/bname/index.ts)_
+_See code: [src/commands/bname/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.2/src/commands/bname/index.ts)_
 
-## `jg pr`
+## `jg cc [ISSUEIDORKEY]`
 
-Generates a Slack Message Linking to a Jira Issue and corresponding Pull Request
+Generates a Conventional Commit Message from a Jira Issue ID/Key
 
 ```
 USAGE
-  $ jg pr [ISSUEIDORKEY] [-c] [-h] [-q]
+  $ jg cc [ISSUEIDORKEY] [--json] [-h] [-q -c]
+
+ARGUMENTS
+  ISSUEIDORKEY  Jira Issue ID or Key
 
 FLAGS
-  -c, --clipboard  (optional) Copy to clipboard
-  -h, --help       (optional) Show help
-  -q, --quiet      (optional) Suppress output
+  -c, --clipboard  Copy to clipboard
+  -h, --help       Show help
+  -q, --quiet      Suppress output
+
+GLOBAL FLAGS
+  --json  Format output as json.
 
 DESCRIPTION
-  Generates a Slack Message Linking to a Jira Issue and corresponding Pull Request
+  Generates a Conventional Commit Message from a Jira Issue ID/Key
 
 EXAMPLES
-  $ git switch feat/XYZ-12345/NOTIFICATIONS-add-profile-update-notification
-  $ jg pr
-  PR for [XYZ-12345](<YOUR-JIRA-HOSTNAME>/browse/XYZ-12345): [#16303](https://github.com/<REPO-OWNER>/<REPO-NAME>/pull/16303)
+  $ jg cc
 
-  $ jg pr -c
-  Copied to Clipboard: PR for [XYZ-12345](<YOUR-JIRA-HOSTNAME>/browse/XYZ-12345): [#16303](https://github.com/<REPO-OWNER>/<REPO-NAME>/pull/16303)
+  $ jg cc --clipboard
+
+  $ jg cc --clipboard --quiet
+
+  $ jg cc --json
 ```
 
-_See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.0/src/commands/pr/index.ts)_
+_See code: [src/commands/cc/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.2/src/commands/cc/index.ts)_
+
+## `jg find [ISSUEIDORKEY]`
+
+Finds the latest GH PR for a Jira ticket
+
+```
+USAGE
+  $ jg find [ISSUEIDORKEY] [--json] [-h] [-q -c]
+
+ARGUMENTS
+  ISSUEIDORKEY  Jira Issue ID or Key
+
+FLAGS
+  -c, --clipboard  Copy to clipboard
+  -h, --help       Show help
+  -q, --quiet      Suppress output
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Finds the latest GH PR for a Jira ticket
+
+EXAMPLES
+  $ jg find
+
+  $ jg find --clipboard
+
+  $ jg find --clipboard --quiet
+
+  $ jg find --json
+```
+
+_See code: [src/commands/find/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.2/src/commands/find/index.ts)_
 
 ## `jg help [COMMAND]`
 
@@ -258,6 +200,68 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.18/src/commands/help.ts)_
+
+## `jg id`
+
+Returns Jira Issue ID from current Git branch
+
+```
+USAGE
+  $ jg id [--json] [-h] [-q -c]
+
+FLAGS
+  -c, --clipboard  Copy to clipboard
+  -h, --help       Show help
+  -q, --quiet      Suppress output
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Returns Jira Issue ID from current Git branch
+
+EXAMPLES
+  $ jg id
+
+  $ jg id --clipboard
+
+  $ jg id --clipboard --quiet
+
+  $ jg id --json
+```
+
+_See code: [src/commands/id/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.2/src/commands/id/index.ts)_
+
+## `jg key`
+
+Returns Jira Issue Key from current Git branch
+
+```
+USAGE
+  $ jg key [--json] [-h] [-q -c]
+
+FLAGS
+  -c, --clipboard  Copy to clipboard
+  -h, --help       Show help
+  -q, --quiet      Suppress output
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Returns Jira Issue Key from current Git branch
+
+EXAMPLES
+  $ jg key
+
+  $ jg key --clipboard
+
+  $ jg key --clipboard --quiet
+
+  $ jg key --json
+```
+
+_See code: [src/commands/key/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.2/src/commands/key/index.ts)_
 
 ## `jg plugins`
 
@@ -549,4 +553,72 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.17/src/commands/plugins/update.ts)_
 
+## `jg pr [ISSUEIDORKEY]`
+
+Generates a Slack Message with a Link to a Jira Issue and corresponding GitHub link
+
+```
+USAGE
+  $ jg pr [ISSUEIDORKEY] [--json] [-h] [-q -c]
+
+ARGUMENTS
+  ISSUEIDORKEY  file to read
+
+FLAGS
+  -c, --clipboard  Copy to clipboard
+  -h, --help       Show help
+  -q, --quiet      Suppress output
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Generates a Slack Message with a Link to a Jira Issue and corresponding GitHub link
+
+EXAMPLES
+  $ jg pr
+
+  $ jg pr --clipboard
+
+  $ jg pr --clipboard --quiet
+
+  $ jg pr --json
+```
+
+_See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.2/src/commands/pr/index.ts)_
+
+## `jg url [ISSUEIDORKEY]`
+
+Returns a URL to a Jira Issue
+
+```
+USAGE
+  $ jg url [ISSUEIDORKEY] [--json] [-h] [-q -c] [-m]
+
+ARGUMENTS
+  ISSUEIDORKEY  Jira Issue ID or Key
+
+FLAGS
+  -c, --clipboard  Copy to clipboard
+  -h, --help       Show help
+  -m, --markdown   Get Markdown Link to Jira Issue
+  -q, --quiet      Suppress output
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Returns a URL to a Jira Issue
+
+EXAMPLES
+  $ jg url
+
+  $ jg url --clipboard
+
+  $ jg url --clipboard --quiet
+
+  $ jg url --json
+```
+
+_See code: [src/commands/url/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.2/src/commands/url/index.ts)_
 <!-- commandsstop -->

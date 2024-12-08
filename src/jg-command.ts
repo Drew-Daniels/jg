@@ -2,7 +2,6 @@ import { Command, Flags, Interfaces } from '@oclif/core'
 // eslint-disable-next-line import/default
 import pkg from 'fs-extra'
 import path from 'node:path'
-import { oraPromise } from 'ora'
 
 const { readJSON } = pkg
 
@@ -87,7 +86,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     this.args = args as Args<T>
     this.validateFlags()
     this.userConfig = await this.getUserConfig()
-    this.jiraIssueKey = await oraPromise(this.getJiraIssueFromArgsOrCurrentBranch(), { prefixText: 'Fetching Jira Issue' })
+    this.jiraIssueKey = await this.getJiraIssueFromArgsOrCurrentBranch()
   }
 
   public validateFlags() {

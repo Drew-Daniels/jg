@@ -34,17 +34,23 @@ async function getJiraIssueKeyFromCurrentBranch(): Promise<string> {
 
 // TODO: Figure out how to enable users to specify their org(s) to search for issues under using a configuration file:
 // Add this to q: org:<org-name>
-async function getLatestPrForJiraIssue(jiraIssueIdOrKey: string): Promise<{ number: number, url: string }> {
-  const issues = await GHClient.rest.search.issuesAndPullRequests({
+// TODO: Limit this to one result
+async function getLatestPrForJiraIssue(jiraIssueIdOrKey: string): Promise<{ number: null | number, url: null | string }> {
+  const response = await GHClient.rest.search.issuesAndPullRequests({
     q: `type:pr is:open ${jiraIssueIdOrKey} in:title assignee:@me`,
   })
-  if (issues.data.total_count === 0) {
-    throw new Error(`No Open PR found for ${jiraIssueIdOrKey} under your name`)
+
+  const results = response.data.items
+  const result = results.length > 0 ? results[0] : null
+
+  if (result && result.pull_request?.html_url) {
+    return {
+      number: result.number,
+      url: result.pull_request.html_url,
+    }
   }
 
-  const { number, url } = issues.data.items[0]
-
-  return { number, url }
+  throw new Error(`No PR found for ${jiraIssueIdOrKey} under your name`)
 }
 
 async function fetchIssue(issueIdOrKey: string): Promise<Issue> {
@@ -64,10 +70,6 @@ function getIssueScopeAndSummary(issue: Issue): string {
   const { summary } = issue.fields
   const formattedSummary = summary.replaceAll(/\s+/g, ' ').replaceAll(/\s+,/g, ',')
   return formattedSummary
-}
-
-function getNumIssueScopes(issueSummary: Issue['fields']['summary']): number {
-  return (issueSummary.match(/:/g) || []).length
 }
 
 function copyToClipboard(data: string) {
