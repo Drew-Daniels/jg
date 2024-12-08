@@ -3,8 +3,8 @@
 Utility functions for Jira and Git
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/jg.svg)](https://npmjs.org/package/jg)
-[![Downloads/week](https://img.shields.io/npm/dw/jg.svg)](https://npmjs.org/package/jg)
+[![Version](https://img.shields.io/npm/v/jgit.svg)](https://npmjs.org/package/jgit)
+[![Downloads/week](https://img.shields.io/npm/dw/jgit.svg)](https://npmjs.org/package/jgit)
 
 <!-- toc -->
 
