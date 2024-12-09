@@ -5,10 +5,10 @@ import { JgCommand } from '../../jg-command.js'
 
 export default class Bname extends JgCommand<typeof Bname> {
   static override args = {
-    issueIdOrKey: Args.string({ description: 'Jira Issue ID or Key' }),
+    issueKey: Args.string({ description: 'Jira Issue Key' }),
   }
 
-  static override description = 'Generates a Git branch name from a Jira Issue ID/Key'
+  static override description = 'Generates a Git branch name from a Jira Issue Key'
 
   public async run(): Promise<{ bname: string }> {
     const { scopes, summary, type } = await oraPromise(this.getExtractedIssueData(this.jiraIssueKey), { text: 'Fetching Jira Issue...' })

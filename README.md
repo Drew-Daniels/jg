@@ -60,9 +60,9 @@ USAGE
 # Commands
 
 <!-- commands -->
-* [`jg bname [ISSUEIDORKEY]`](#jg-bname-issueidorkey)
-* [`jg cc [ISSUEIDORKEY]`](#jg-cc-issueidorkey)
-* [`jg find [ISSUEIDORKEY]`](#jg-find-issueidorkey)
+* [`jg bname [ISSUEKEY]`](#jg-bname-issuekey)
+* [`jg cc [ISSUEKEY]`](#jg-cc-issuekey)
+* [`jg find [ISSUEKEY]`](#jg-find-issuekey)
 * [`jg help [COMMAND]`](#jg-help-command)
 * [`jg id`](#jg-id)
 * [`jg key`](#jg-key)
@@ -76,19 +76,19 @@ USAGE
 * [`jg plugins uninstall [PLUGIN]`](#jg-plugins-uninstall-plugin)
 * [`jg plugins unlink [PLUGIN]`](#jg-plugins-unlink-plugin)
 * [`jg plugins update`](#jg-plugins-update)
-* [`jg pr [ISSUEIDORKEY]`](#jg-pr-issueidorkey)
-* [`jg url [ISSUEIDORKEY]`](#jg-url-issueidorkey)
+* [`jg pr [ISSUEKEY]`](#jg-pr-issuekey)
+* [`jg url [ISSUEKEY]`](#jg-url-issuekey)
 
-## `jg bname [ISSUEIDORKEY]`
+## `jg bname [ISSUEKEY]`
 
-Generates a Git branch name from a Jira Issue ID/Key
+Generates a Git branch name from a Jira Issue Key
 
 ```
 USAGE
-  $ jg bname [ISSUEIDORKEY] [--json] [-h] [-q -c]
+  $ jg bname [ISSUEKEY] [--json] [-h] [-q -c]
 
 ARGUMENTS
-  ISSUEIDORKEY  Jira Issue ID or Key
+  ISSUEKEY  Jira Issue Key
 
 FLAGS
   -c, --clipboard  Copy to clipboard
@@ -99,7 +99,7 @@ GLOBAL FLAGS
   --json  Format output as json.
 
 DESCRIPTION
-  Generates a Git branch name from a Jira Issue ID/Key
+  Generates a Git branch name from a Jira Issue Key
 
 EXAMPLES
   $ jg bname
@@ -113,16 +113,16 @@ EXAMPLES
 
 _See code: [src/commands/bname/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.5/src/commands/bname/index.ts)_
 
-## `jg cc [ISSUEIDORKEY]`
+## `jg cc [ISSUEKEY]`
 
-Generates a Conventional Commit Message from a Jira Issue ID/Key
+Generates a Conventional Commit Message from a Jira Issue Key
 
 ```
 USAGE
-  $ jg cc [ISSUEIDORKEY] [--json] [-h] [-q -c]
+  $ jg cc [ISSUEKEY] [--json] [-h] [-q -c]
 
 ARGUMENTS
-  ISSUEIDORKEY  Jira Issue ID or Key
+  ISSUEKEY  Jira Issue Key
 
 FLAGS
   -c, --clipboard  Copy to clipboard
@@ -133,7 +133,7 @@ GLOBAL FLAGS
   --json  Format output as json.
 
 DESCRIPTION
-  Generates a Conventional Commit Message from a Jira Issue ID/Key
+  Generates a Conventional Commit Message from a Jira Issue Key
 
 EXAMPLES
   $ jg cc
@@ -147,16 +147,16 @@ EXAMPLES
 
 _See code: [src/commands/cc/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.5/src/commands/cc/index.ts)_
 
-## `jg find [ISSUEIDORKEY]`
+## `jg find [ISSUEKEY]`
 
 Finds the latest GH PR for a Jira ticket
 
 ```
 USAGE
-  $ jg find [ISSUEIDORKEY] [--json] [-h] [-q -c]
+  $ jg find [ISSUEKEY] [--json] [-h] [-q -c]
 
 ARGUMENTS
-  ISSUEIDORKEY  Jira Issue ID or Key
+  ISSUEKEY  Jira Issue Key
 
 FLAGS
   -c, --clipboard  Copy to clipboard
@@ -553,16 +553,16 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.17/src/commands/plugins/update.ts)_
 
-## `jg pr [ISSUEIDORKEY]`
+## `jg pr [ISSUEKEY]`
 
 Generates a Slack Message with a Link to a Jira Issue and corresponding GitHub link
 
 ```
 USAGE
-  $ jg pr [ISSUEIDORKEY] [--json] [-h] [-q -c]
+  $ jg pr [ISSUEKEY] [--json] [-h] [-q -c]
 
 ARGUMENTS
-  ISSUEIDORKEY  file to read
+  ISSUEKEY  Jira Issue Key
 
 FLAGS
   -c, --clipboard  Copy to clipboard
@@ -587,16 +587,16 @@ EXAMPLES
 
 _See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.5/src/commands/pr/index.ts)_
 
-## `jg url [ISSUEIDORKEY]`
+## `jg url [ISSUEKEY]`
 
 Returns a URL to a Jira Issue
 
 ```
 USAGE
-  $ jg url [ISSUEIDORKEY] [--json] [-h] [-q -c] [-m]
+  $ jg url [ISSUEKEY] [--json] [-h] [-q -c] [-m]
 
 ARGUMENTS
-  ISSUEIDORKEY  Jira Issue ID or Key
+  ISSUEKEY  Jira Issue Key
 
 FLAGS
   -c, --clipboard  Copy to clipboard

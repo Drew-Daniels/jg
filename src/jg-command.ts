@@ -1,12 +1,6 @@
 import { Command, Flags, Interfaces } from '@oclif/core'
 import clipboard from 'clipboardy'
-// eslint-disable-next-line import/default
-import pkg from 'fs-extra'
 import { Issue } from "jira.js/out/version3/models/issue.js";
-import path from 'node:path'
-
-
-const { readJSON } = pkg
 
 import { GHClient } from "./gh-client/index.js";
 import { GitClient } from './git-client/index.js';
@@ -19,15 +13,6 @@ type ExtractedIssueData = {
   scopes: string[]
   summary: string
   type: string
-}
-
-type UserConfig = {
-  github: {
-    organization: string
-  }
-  jira: {
-    issuePrefix: string
-  },
 }
 
 export abstract class JgCommand<T extends typeof Command> extends Command {
@@ -49,7 +34,6 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
   protected args!: Args<T>
   protected flags!: Flags<T>
   protected jiraIssueKey!: string
-  protected userConfig!: UserConfig
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected async catch(err: { exitCode?: number } & Error): Promise<any> {
@@ -73,32 +57,8 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     return super.finally(_)
   }
 
-  /**
-   * Ensures that a Jira Issue ID or Key is formatted into a Jira Issue Key
-   * @param jiraIssueIdOrKey - Jira Issue ID or Key
-   * @returns string - Jira Issue Key
-   */
-  formatJiraIssueIdOrKey(jiraIssueIdOrKey: string) {
-    if (/^\d{5,}$/.test(jiraIssueIdOrKey)) {
-      if (!this.userConfig.jira.issuePrefix && !process.env.JIRA_ISSUE_PREFIX) {
-        this.log('No Jira prefix configured in user config - either add to config.json or set JIRA_ISSUE_PREFIX environment variable')
-        this.exit(1)
-      }
-
-      jiraIssueIdOrKey = `${this.userConfig.jira.issuePrefix || process.env.JIRA_ISSUE_PREFIX}-${jiraIssueIdOrKey}`
-    }
-
-    if (!(new RegExp(`^${this.userConfig.jira.issuePrefix}-\\d{5,}$`).test(jiraIssueIdOrKey))) {
-      this.log(`Jira Issue format incorrect: ${jiraIssueIdOrKey}, expected: ${this.userConfig.jira.issuePrefix}-<5 digits>`)
-      this.exit(1)
-    }
-
-    return jiraIssueIdOrKey
-  }
-
-
-  async getExtractedIssueData(issueIdOrKey: string): Promise<ExtractedIssueData> {
-    const issue = await this.fetchIssue(issueIdOrKey)
+  async getExtractedIssueData(issueKey: string): Promise<ExtractedIssueData> {
+    const issue = await this.fetchIssue(issueKey)
     const issueScopeAndSummary = this.getIssueScopeAndSummary(issue)
       .replaceAll('->', ':')
 
@@ -139,10 +99,10 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
   }
 
   // TODO: Need to figure out handling for when not in a git repo, or on a branch does not match expected format
-  public async getJiraIssueFromArgsOrCurrentBranch(): Promise<string> {
+  public async getJiraIssueKeyFromArgsOrCurrentBranch(): Promise<string> {
     return new Promise((resolve) => {
-      if (this.args.issueIdOrKey) {
-        resolve(this.args.issueIdOrKey)
+      if (this.args.issueKey) {
+        resolve(this.args.issueKey)
       } else {
         this.getJiraIssueKeyFromCurrentBranch().then((jiraIssueKey) => {
           resolve(jiraIssueKey)
@@ -155,15 +115,17 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     const branchSummaryResult = await GitClient.branch()
     const { current } = branchSummaryResult
     const split = current.split('/')
-    const jiraIssueIdOrKey = split[1].toUpperCase()
+    const jiraIssueKey = split[1].toUpperCase()
 
-    return this.formatJiraIssueIdOrKey(jiraIssueIdOrKey)
+    return jiraIssueKey
   }
 
   getJiraIssueLink(issueKey: string): string {
     return `${process.env.JIRA_API_HOSTNAME}/browse/${issueKey}`
   }
 
+  // TODO: Sort by most recent created at date
+  // TODO: Limit to one result
   async getLatestPrForJiraIssue(jiraIssueIdOrKey: string): Promise<{ number: null | number, url: null | string }> {
     const response = await GHClient.rest.search.issuesAndPullRequests({
       q: `type:pr is:open ${jiraIssueIdOrKey} in:title assignee:@me`,
@@ -180,10 +142,6 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     }
 
     throw new Error(`No PR found for ${jiraIssueIdOrKey} under your name`)
-  }
-
-  public async getUserConfig() {
-    return readJSON(path.join(this.config.configDir, 'config.json'))
   }
 
   // TODO: Codesmell, this isn't just logging but copying to system clipboard, so might need to decouple this a bit
@@ -210,8 +168,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     this.flags = flags as Flags<T>
     this.args = args as Args<T>
     this.validateFlags()
-    this.userConfig = await this.getUserConfig()
-    this.jiraIssueKey = this.formatJiraIssueIdOrKey(await this.getJiraIssueFromArgsOrCurrentBranch())
+    this.jiraIssueKey = await this.getJiraIssueKeyFromArgsOrCurrentBranch()
   }
 
   public validateFlags() {

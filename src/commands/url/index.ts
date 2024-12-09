@@ -4,7 +4,7 @@ import { JgCommand } from '../../jg-command.js'
 
 export default class Url extends JgCommand<typeof Url> {
   static override args = {
-    issueIdOrKey: Args.string({ description: 'Jira Issue ID or Key' }),
+    issueKey: Args.string({ description: 'Jira Issue Key' }),
   }
 
   static override description = 'Returns a URL to a Jira Issue'

@@ -5,7 +5,7 @@ import { JgCommand } from '../../jg-command.js'
 
 export default class Find extends JgCommand<typeof Find> {
   static override args = {
-    issueIdOrKey: Args.string({ description: 'Jira Issue ID or Key' }),
+    issueKey: Args.string({ description: 'Jira Issue Key' }),
   }
 
   static override description = 'Finds the latest GH PR for a Jira ticket'

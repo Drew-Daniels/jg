@@ -5,7 +5,7 @@ import { JgCommand } from '../../jg-command.js'
 
 export default class Pr extends JgCommand<typeof Pr> {
   static override args = {
-    issueIdOrKey: Args.string({ description: 'file to read' }),
+    issueKey: Args.string({ description: 'Jira Issue Key' }),
   }
 
   static override description = 'Generates a Slack Message with a Link to a Jira Issue and corresponding GitHub link'
