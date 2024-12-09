@@ -7,13 +7,11 @@ Utility functions for Jira and Git
 [![Downloads/week](https://img.shields.io/npm/dw/jgit.svg)](https://npmjs.org/package/jgit)
 
 <!-- toc -->
-* [`jgit`](#jgit)
-* [Setup](#setup)
-* [Your Organization's Jira instance](#your-organizations-jira-instance)
-* [Your Jira API token https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/](#your-jira-api-token-httpssupportatlassiancomatlassian-accountdocsmanage-api-tokens-for-your-atlassian-account)
-* [Your Organization's email address - Ex. <firstname><lastname>@<organization>.com](#your-organizations-email-address---ex-firstnamelastnameorganizationcom)
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [`jgit`](#jgit)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Commands](#commands)
 <!-- tocstop -->
 
 # Setup
@@ -44,6 +42,7 @@ export JIRA_API_EMAIL="YOUR_JIRA_EMAIL"
 # Usage
 
 <!-- usage -->
+
 ```sh-session
 $ npm install -g jgit
 $ jg COMMAND
@@ -55,29 +54,31 @@ USAGE
   $ jg COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-* [`jg bname [ISSUEKEY]`](#jg-bname-issuekey)
-* [`jg cc [ISSUEKEY]`](#jg-cc-issuekey)
-* [`jg find [ISSUEKEY]`](#jg-find-issuekey)
-* [`jg help [COMMAND]`](#jg-help-command)
-* [`jg id`](#jg-id)
-* [`jg key`](#jg-key)
-* [`jg plugins`](#jg-plugins)
-* [`jg plugins add PLUGIN`](#jg-plugins-add-plugin)
-* [`jg plugins:inspect PLUGIN...`](#jg-pluginsinspect-plugin)
-* [`jg plugins install PLUGIN`](#jg-plugins-install-plugin)
-* [`jg plugins link PATH`](#jg-plugins-link-path)
-* [`jg plugins remove [PLUGIN]`](#jg-plugins-remove-plugin)
-* [`jg plugins reset`](#jg-plugins-reset)
-* [`jg plugins uninstall [PLUGIN]`](#jg-plugins-uninstall-plugin)
-* [`jg plugins unlink [PLUGIN]`](#jg-plugins-unlink-plugin)
-* [`jg plugins update`](#jg-plugins-update)
-* [`jg pr [ISSUEKEY]`](#jg-pr-issuekey)
-* [`jg url [ISSUEKEY]`](#jg-url-issuekey)
+
+- [`jg bname [ISSUEKEY]`](#jg-bname-issuekey)
+- [`jg cc [ISSUEKEY]`](#jg-cc-issuekey)
+- [`jg find [ISSUEKEY]`](#jg-find-issuekey)
+- [`jg help [COMMAND]`](#jg-help-command)
+- [`jg id`](#jg-id)
+- [`jg key`](#jg-key)
+- [`jg plugins`](#jg-plugins)
+- [`jg plugins add PLUGIN`](#jg-plugins-add-plugin)
+- [`jg plugins:inspect PLUGIN...`](#jg-pluginsinspect-plugin)
+- [`jg plugins install PLUGIN`](#jg-plugins-install-plugin)
+- [`jg plugins link PATH`](#jg-plugins-link-path)
+- [`jg plugins remove [PLUGIN]`](#jg-plugins-remove-plugin)
+- [`jg plugins reset`](#jg-plugins-reset)
+- [`jg plugins uninstall [PLUGIN]`](#jg-plugins-uninstall-plugin)
+- [`jg plugins unlink [PLUGIN]`](#jg-plugins-unlink-plugin)
+- [`jg plugins update`](#jg-plugins-update)
+- [`jg pr [ISSUEKEY]`](#jg-pr-issuekey)
+- [`jg url [ISSUEKEY]`](#jg-url-issuekey)
 
 ## `jg bname [ISSUEKEY]`
 
@@ -621,4 +622,5 @@ EXAMPLES
 ```
 
 _See code: [src/commands/url/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.7/src/commands/url/index.ts)_
+
 <!-- commandsstop -->
