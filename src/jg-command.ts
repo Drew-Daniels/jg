@@ -97,10 +97,8 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
   }
 
 
-  // Add this to q: org:<org-name>
   async getExtractedIssueData(issueIdOrKey: string): Promise<ExtractedIssueData> {
     const issue = await this.fetchIssue(issueIdOrKey)
-    const type = this.getIssueType(issue)
     const issueScopeAndSummary = this.getIssueScopeAndSummary(issue)
       .replaceAll('->', ':')
 
@@ -111,11 +109,13 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
       .replaceAll(/\s*:\s*/g, ':')
       .replaceAll(/\s+$/g, '')
 
+    const scopes = scopesString.split(':').filter(Boolean)
+
     const summary = issueScopeAndSummary.slice(Math.max(0, lastScopeIndex + 1))
       .replaceAll(/^\s+/g, '')
       .replaceAll(/\s+$/g, '')
 
-    const scopes = scopesString.split(':').filter(Boolean)
+    const type = this.getIssueType(issue)
 
     return {
       scopes,
@@ -164,7 +164,6 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     return `${process.env.JIRA_API_HOSTNAME}/browse/${issueKey}`
   }
 
-  // TODO: Limit this to one result
   async getLatestPrForJiraIssue(jiraIssueIdOrKey: string): Promise<{ number: null | number, url: null | string }> {
     const response = await GHClient.rest.search.issuesAndPullRequests({
       q: `type:pr is:open ${jiraIssueIdOrKey} in:title assignee:@me`,
