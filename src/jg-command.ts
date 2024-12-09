@@ -141,7 +141,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
       }
     }
 
-    throw new Error(`No PR found for ${jiraIssueIdOrKey} under your name`)
+    throw new Error(`No open PRs found for ${jiraIssueIdOrKey} assigned to you`)
   }
 
   // TODO: Codesmell, this isn't just logging but copying to system clipboard, so might need to decouple this a bit
