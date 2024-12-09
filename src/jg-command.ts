@@ -21,6 +21,15 @@ type ExtractedIssueData = {
   type: string
 }
 
+type UserConfig = {
+  github: {
+    organization: string
+  }
+  jira: {
+    issuePrefix: string
+  },
+}
+
 export abstract class JgCommand<T extends typeof Command> extends Command {
   static baseFlags = {
     clipboard: Flags.boolean({ char: 'c', default: false, description: 'Copy to clipboard' }),
@@ -40,7 +49,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
   protected args!: Args<T>
   protected flags!: Flags<T>
   protected jiraIssueKey!: string
-  protected userConfig!: Record<string, unknown>
+  protected userConfig!: UserConfig
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected async catch(err: { exitCode?: number } & Error): Promise<any> {
@@ -65,6 +74,26 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
   }
 
   // TODO: Figure out how to enable users to specify their org(s) to search for issues under using a configuration file:
+  formatJiraIssueIdOrKey(jiraIssueIdOrKey: string) {
+    if (/^\d{5,}$/.test(jiraIssueIdOrKey)) {
+      // add prefix
+      if (!this.userConfig.jira.issuePrefix && !process.env.JIRA_ISSUE_PREFIX) {
+        this.log('No Jira prefix configured in user config - either add to config.json or set JIRA_ISSUE_PREFIX environment variable')
+        this.exit(1)
+      }
+
+      jiraIssueIdOrKey = `${this.userConfig.jira.issuePrefix || process.env.JIRA_ISSUE_PREFIX}-${jiraIssueIdOrKey}`
+    }
+
+    if (!(new RegExp(`^${this.userConfig.jira.issuePrefix}-\\d{5,}$`).test(jiraIssueIdOrKey))) {
+      this.log(`Jira Issue format incorrect: ${jiraIssueIdOrKey}, expected: ${this.userConfig.jira.issuePrefix}-<5 digits>`)
+      this.exit(1)
+    }
+
+    return jiraIssueIdOrKey
+  }
+
+
   // Add this to q: org:<org-name>
   async getExtractedIssueData(issueIdOrKey: string): Promise<ExtractedIssueData> {
     const issue = await this.fetchIssue(issueIdOrKey)
@@ -91,7 +120,6 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
       type,
     }
   }
-
 
   getIssueScopeAndSummary(issue: Issue): string {
     const { summary } = issue.fields
@@ -124,15 +152,9 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     const branchSummaryResult = await GitClient.branch()
     const { current } = branchSummaryResult
     const split = current.split('/')
-    const jiraIssueKey = split[1]
-    const formattedJiraIssueKey = jiraIssueKey
-      .toUpperCase()
-    // TODO: Check if Jira Issue Key includes prefix
-    if (!(/^[A-Z]+-\d{5,}$/.test(formattedJiraIssueKey))) {
-      throw new Error(`Not a Jira Issue Key: ${jiraIssueKey}`)
-    }
+    const jiraIssueIdOrKey = split[1].toUpperCase()
 
-    return formattedJiraIssueKey
+    return this.formatJiraIssueIdOrKey(jiraIssueIdOrKey)
   }
 
   getJiraIssueLink(issueKey: string): string {
@@ -187,7 +209,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     this.args = args as Args<T>
     this.validateFlags()
     this.userConfig = await this.getUserConfig()
-    this.jiraIssueKey = await this.getJiraIssueFromArgsOrCurrentBranch()
+    this.jiraIssueKey = this.formatJiraIssueIdOrKey(await this.getJiraIssueFromArgsOrCurrentBranch())
   }
 
   public validateFlags() {
