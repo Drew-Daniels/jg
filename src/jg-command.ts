@@ -73,10 +73,13 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     return super.finally(_)
   }
 
-  // TODO: Figure out how to enable users to specify their org(s) to search for issues under using a configuration file:
+  /**
+   * Ensures that a Jira Issue ID or Key is formatted into a Jira Issue Key
+   * @param jiraIssueIdOrKey - Jira Issue ID or Key
+   * @returns string - Jira Issue Key
+   */
   formatJiraIssueIdOrKey(jiraIssueIdOrKey: string) {
     if (/^\d{5,}$/.test(jiraIssueIdOrKey)) {
-      // add prefix
       if (!this.userConfig.jira.issuePrefix && !process.env.JIRA_ISSUE_PREFIX) {
         this.log('No Jira prefix configured in user config - either add to config.json or set JIRA_ISSUE_PREFIX environment variable')
         this.exit(1)
