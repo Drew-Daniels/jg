@@ -128,7 +128,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
   // TODO: Limit to one result
   async getLatestPrForJiraIssue(jiraIssueIdOrKey: string): Promise<{ number: null | number, url: null | string }> {
     const response = await GHClient.rest.search.issuesAndPullRequests({
-      q: `type:pr is:open ${jiraIssueIdOrKey} in:title assignee:@me`,
+      q: `type:pr is:open ${jiraIssueIdOrKey} assignee:@me`,
     })
 
     const results = response.data.items
