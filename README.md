@@ -7,11 +7,10 @@ Utility functions for Jira and Git
 [![Downloads/week](https://img.shields.io/npm/dw/jgit.svg)](https://npmjs.org/package/jgit)
 
 <!-- toc -->
-
-- [`jgit`](#jgit)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Commands](#commands)
+* [`jgit`](#jgit)
+* [Setup](#setup)
+* [Usage](#usage)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # Setup
@@ -31,54 +30,48 @@ export GITHUB_OAUTH_TOKEN="YOUR_GITHUB_OAUTH_TOKEN"
 You will need the following env vars set in your shell to authenticate with the Jira API:
 
 ```sh
-# Your Organization's Jira instance
 export JIRA_HOSTNAME="https://jira.example.com"
-# Your Jira API token https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/
 export JIRA_API_TOKEN="YOUR_JIRA_API_TOKEN"
-# Your Organization's email address - Ex. <firstname><lastname>@<organization>.com
 export JIRA_API_EMAIL="YOUR_JIRA_EMAIL"
 ```
 
 # Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g jgit
 $ jg COMMAND
 running command...
 $ jg (--version)
-jgit/0.0.7 darwin-arm64 node-v22.5.1
+jgit/0.0.8 darwin-arm64 node-v22.5.1
 $ jg --help [COMMAND]
 USAGE
   $ jg COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-
-- [`jg bname [ISSUEKEY]`](#jg-bname-issuekey)
-- [`jg cc [ISSUEKEY]`](#jg-cc-issuekey)
-- [`jg find [ISSUEKEY]`](#jg-find-issuekey)
-- [`jg help [COMMAND]`](#jg-help-command)
-- [`jg id`](#jg-id)
-- [`jg key`](#jg-key)
-- [`jg plugins`](#jg-plugins)
-- [`jg plugins add PLUGIN`](#jg-plugins-add-plugin)
-- [`jg plugins:inspect PLUGIN...`](#jg-pluginsinspect-plugin)
-- [`jg plugins install PLUGIN`](#jg-plugins-install-plugin)
-- [`jg plugins link PATH`](#jg-plugins-link-path)
-- [`jg plugins remove [PLUGIN]`](#jg-plugins-remove-plugin)
-- [`jg plugins reset`](#jg-plugins-reset)
-- [`jg plugins uninstall [PLUGIN]`](#jg-plugins-uninstall-plugin)
-- [`jg plugins unlink [PLUGIN]`](#jg-plugins-unlink-plugin)
-- [`jg plugins update`](#jg-plugins-update)
-- [`jg pr [ISSUEKEY]`](#jg-pr-issuekey)
-- [`jg url [ISSUEKEY]`](#jg-url-issuekey)
+* [`jg bname [ISSUEKEY]`](#jg-bname-issuekey)
+* [`jg cc [ISSUEKEY]`](#jg-cc-issuekey)
+* [`jg find [ISSUEKEY]`](#jg-find-issuekey)
+* [`jg help [COMMAND]`](#jg-help-command)
+* [`jg id`](#jg-id)
+* [`jg key`](#jg-key)
+* [`jg plugins`](#jg-plugins)
+* [`jg plugins add PLUGIN`](#jg-plugins-add-plugin)
+* [`jg plugins:inspect PLUGIN...`](#jg-pluginsinspect-plugin)
+* [`jg plugins install PLUGIN`](#jg-plugins-install-plugin)
+* [`jg plugins link PATH`](#jg-plugins-link-path)
+* [`jg plugins remove [PLUGIN]`](#jg-plugins-remove-plugin)
+* [`jg plugins reset`](#jg-plugins-reset)
+* [`jg plugins uninstall [PLUGIN]`](#jg-plugins-uninstall-plugin)
+* [`jg plugins unlink [PLUGIN]`](#jg-plugins-unlink-plugin)
+* [`jg plugins update`](#jg-plugins-update)
+* [`jg pr [ISSUEKEY]`](#jg-pr-issuekey)
+* [`jg url [ISSUEKEY]`](#jg-url-issuekey)
 
 ## `jg bname [ISSUEKEY]`
 
@@ -112,7 +105,7 @@ EXAMPLES
   $ jg bname --json
 ```
 
-_See code: [src/commands/bname/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.7/src/commands/bname/index.ts)_
+_See code: [src/commands/bname/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/bname/index.ts)_
 
 ## `jg cc [ISSUEKEY]`
 
@@ -146,7 +139,7 @@ EXAMPLES
   $ jg cc --json
 ```
 
-_See code: [src/commands/cc/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.7/src/commands/cc/index.ts)_
+_See code: [src/commands/cc/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/cc/index.ts)_
 
 ## `jg find [ISSUEKEY]`
 
@@ -180,7 +173,7 @@ EXAMPLES
   $ jg find --json
 ```
 
-_See code: [src/commands/find/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.7/src/commands/find/index.ts)_
+_See code: [src/commands/find/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/find/index.ts)_
 
 ## `jg help [COMMAND]`
 
@@ -231,7 +224,7 @@ EXAMPLES
   $ jg id --json
 ```
 
-_See code: [src/commands/id/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.7/src/commands/id/index.ts)_
+_See code: [src/commands/id/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/id/index.ts)_
 
 ## `jg key`
 
@@ -262,7 +255,7 @@ EXAMPLES
   $ jg key --json
 ```
 
-_See code: [src/commands/key/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.7/src/commands/key/index.ts)_
+_See code: [src/commands/key/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/key/index.ts)_
 
 ## `jg plugins`
 
@@ -586,7 +579,7 @@ EXAMPLES
   $ jg pr --json
 ```
 
-_See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.7/src/commands/pr/index.ts)_
+_See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/pr/index.ts)_
 
 ## `jg url [ISSUEKEY]`
 
@@ -621,6 +614,5 @@ EXAMPLES
   $ jg url --json
 ```
 
-_See code: [src/commands/url/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.7/src/commands/url/index.ts)_
-
+_See code: [src/commands/url/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/url/index.ts)_
 <!-- commandsstop -->
