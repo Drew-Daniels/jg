@@ -71,6 +71,7 @@ USAGE
 * [`jg plugins unlink [PLUGIN]`](#jg-plugins-unlink-plugin)
 * [`jg plugins update`](#jg-plugins-update)
 * [`jg pr [ISSUEKEY]`](#jg-pr-issuekey)
+* [`jg related [ISSUEKEY]`](#jg-related-issuekey)
 * [`jg revisit [ISSUEKEY]`](#jg-revisit-issuekey)
 * [`jg url [ISSUEKEY]`](#jg-url-issuekey)
 
@@ -581,6 +582,34 @@ EXAMPLES
 ```
 
 _See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.9/src/commands/pr/index.ts)_
+
+## `jg related [ISSUEKEY]`
+
+Opens all related PRs for a given Jira Issue
+
+```
+USAGE
+  $ jg related [ISSUEKEY] [--json] [-h] [-q -c]
+
+ARGUMENTS
+  ISSUEKEY  Jira Issue Key
+
+FLAGS
+  -c, --clipboard  Copy to clipboard
+  -h, --help       Show help
+  -q, --quiet      Suppress output
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Opens all related PRs for a given Jira Issue
+
+EXAMPLES
+  $ jg related
+```
+
+_See code: [src/commands/related/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.9/src/commands/related/index.ts)_
 
 ## `jg revisit [ISSUEKEY]`
 
