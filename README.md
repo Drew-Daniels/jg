@@ -43,7 +43,7 @@ $ npm install -g jgit
 $ jg COMMAND
 running command...
 $ jg (--version)
-jgit/0.0.8 darwin-arm64 node-v22.5.1
+jgit/0.0.9 darwin-arm64 node-v22.5.1
 $ jg --help [COMMAND]
 USAGE
   $ jg COMMAND
@@ -71,6 +71,7 @@ USAGE
 * [`jg plugins unlink [PLUGIN]`](#jg-plugins-unlink-plugin)
 * [`jg plugins update`](#jg-plugins-update)
 * [`jg pr [ISSUEKEY]`](#jg-pr-issuekey)
+* [`jg revisit [ISSUEKEY]`](#jg-revisit-issuekey)
 * [`jg url [ISSUEKEY]`](#jg-url-issuekey)
 
 ## `jg bname [ISSUEKEY]`
@@ -105,7 +106,7 @@ EXAMPLES
   $ jg bname --json
 ```
 
-_See code: [src/commands/bname/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/bname/index.ts)_
+_See code: [src/commands/bname/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.9/src/commands/bname/index.ts)_
 
 ## `jg cc [ISSUEKEY]`
 
@@ -139,7 +140,7 @@ EXAMPLES
   $ jg cc --json
 ```
 
-_See code: [src/commands/cc/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/cc/index.ts)_
+_See code: [src/commands/cc/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.9/src/commands/cc/index.ts)_
 
 ## `jg find [ISSUEKEY]`
 
@@ -173,7 +174,7 @@ EXAMPLES
   $ jg find --json
 ```
 
-_See code: [src/commands/find/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/find/index.ts)_
+_See code: [src/commands/find/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.9/src/commands/find/index.ts)_
 
 ## `jg help [COMMAND]`
 
@@ -224,7 +225,7 @@ EXAMPLES
   $ jg id --json
 ```
 
-_See code: [src/commands/id/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/id/index.ts)_
+_See code: [src/commands/id/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.9/src/commands/id/index.ts)_
 
 ## `jg key`
 
@@ -255,7 +256,7 @@ EXAMPLES
   $ jg key --json
 ```
 
-_See code: [src/commands/key/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/key/index.ts)_
+_See code: [src/commands/key/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.9/src/commands/key/index.ts)_
 
 ## `jg plugins`
 
@@ -579,7 +580,35 @@ EXAMPLES
   $ jg pr --json
 ```
 
-_See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/pr/index.ts)_
+_See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.9/src/commands/pr/index.ts)_
+
+## `jg revisit [ISSUEKEY]`
+
+Opens all related PRs for a given Jira Issue
+
+```
+USAGE
+  $ jg revisit [ISSUEKEY] [--json] [-h] [-q -c]
+
+ARGUMENTS
+  ISSUEKEY  Jira Issue Key
+
+FLAGS
+  -c, --clipboard  Copy to clipboard
+  -h, --help       Show help
+  -q, --quiet      Suppress output
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Opens all related PRs for a given Jira Issue
+
+EXAMPLES
+  $ jg revisit
+```
+
+_See code: [src/commands/revisit/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.9/src/commands/revisit/index.ts)_
 
 ## `jg url [ISSUEKEY]`
 
@@ -614,5 +643,5 @@ EXAMPLES
   $ jg url --json
 ```
 
-_See code: [src/commands/url/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.8/src/commands/url/index.ts)_
+_See code: [src/commands/url/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.9/src/commands/url/index.ts)_
 <!-- commandsstop -->

@@ -3,6 +3,7 @@ import open from 'open'
 
 import { JgCommand } from '../../jg-command.js'
 
+// TODO: Fix flags, this should not accept any current state
 export default class Revisit extends JgCommand<typeof Revisit> {
   static override args = {
     issueKey: Args.string({ description: 'Jira Issue Key' }),
