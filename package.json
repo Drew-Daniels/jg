@@ -15,6 +15,7 @@
     "@octokit/plugin-rest-endpoint-methods": "^13.2.6",
     "clipboardy": "^4.0.0",
     "jira.js": "^4.0.2",
+    "open": "^10.1.0",
     "ora": "^8.1.1",
     "simple-git": "^3.27.0"
   },

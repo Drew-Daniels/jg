@@ -51,6 +51,22 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     return issue
   }
 
+  public async fetchRelatedIssues(issueIdOrKey: string): Promise<string[]> {
+    const openPRs = await GHClient.rest.search.issuesAndPullRequests({
+      q: `type:pr is:open ${issueIdOrKey} assignee:@me`,
+    })
+    const mergedPRs = await GHClient.rest.search.issuesAndPullRequests({
+      q: `type:pr is:merged ${issueIdOrKey} assignee:@me`,
+    })
+    const relatedPRs = [...openPRs.data.items, ...mergedPRs.data.items]
+
+    if (relatedPRs.length === 0) {
+      return []
+    }
+
+    return relatedPRs.map((pr) => pr.pull_request?.html_url as string)
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected async finally(_: Error | undefined): Promise<any> {
     // called after run and catch regardless of whether or not the command errored
@@ -120,11 +136,11 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     return jiraIssueKey
   }
 
+  // TODO: Sort by most recent created at date
   getJiraIssueLink(issueKey: string): string {
     return `${process.env.JIRA_API_HOSTNAME}/browse/${issueKey}`
   }
 
-  // TODO: Sort by most recent created at date
   // TODO: Limit to one result
   async getLatestPrForJiraIssue(jiraIssueIdOrKey: string): Promise<{ number: null | number, url: null | string }> {
     const response = await GHClient.rest.search.issuesAndPullRequests({
