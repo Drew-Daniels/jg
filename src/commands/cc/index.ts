@@ -15,7 +15,7 @@ export default class Cc extends JgCommand<typeof Cc> {
     const { scopes, summary, type } = await oraPromise(this.getExtractedIssueData(this.jiraIssueKey), { prefixText: "Fetching Jira Issue..." })
     const issueScope = scopes.length > 0 ? `(${scopes.join(':')})` : ''
 
-    const message = `${type === 'Bug' ? 'fix' : 'feat'}${issueScope}: [${this.args.issueKey}] ${summary}`
+    const message = `${type === 'Bug' ? 'fix' : 'feat'}${issueScope}: [${this.jiraIssueKey}] ${summary}`
     this.handleLogging(message)
 
     return {
