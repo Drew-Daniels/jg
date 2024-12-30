@@ -41,7 +41,8 @@ export default class Bname extends JgCommand<typeof Bname> {
 
     // TODO: Add support for just passing jira issue ID, not the entire key
     let branchName = `${type === 'Bug' ? 'fix' : 'feat'}/${this.jiraIssueKey}/${issueScope}${issueSummary}`
-    branchName = branchName.slice(0, 110)
+    // TODO: Figure out how to make the branch name end on last whole word
+    branchName = branchName.slice(0, 110).replaceAll(/-$/g, '')
     this.handleLogging(branchName)
 
     return {
