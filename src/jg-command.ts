@@ -77,6 +77,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     const issue = await this.fetchIssue(issueKey)
     const issueScopeAndSummary = this.getIssueScopeAndSummary(issue)
       .replaceAll('->', ':')
+      .replaceAll('-', ':')
 
     const lastScopeIndex = issueScopeAndSummary.lastIndexOf(':')
 
