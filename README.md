@@ -43,7 +43,7 @@ $ npm install -g jgit
 $ jg COMMAND
 running command...
 $ jg (--version)
-jgit/0.0.14 darwin-arm64 node-v22.5.1
+jgit/0.0.15 darwin-arm64 node-v22.5.1
 $ jg --help [COMMAND]
 USAGE
   $ jg COMMAND
@@ -108,7 +108,7 @@ EXAMPLES
   $ jg bname --json
 ```
 
-_See code: [src/commands/bname/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.14/src/commands/bname/index.ts)_
+_See code: [src/commands/bname/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.15/src/commands/bname/index.ts)_
 
 ## `jg cc [ISSUEKEY]`
 
@@ -142,7 +142,7 @@ EXAMPLES
   $ jg cc --json
 ```
 
-_See code: [src/commands/cc/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.14/src/commands/cc/index.ts)_
+_See code: [src/commands/cc/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.15/src/commands/cc/index.ts)_
 
 ## `jg changed [ISSUEKEY]`
 
@@ -170,7 +170,7 @@ EXAMPLES
   $ jg changed
 ```
 
-_See code: [src/commands/changed/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.14/src/commands/changed/index.ts)_
+_See code: [src/commands/changed/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.15/src/commands/changed/index.ts)_
 
 ## `jg find [ISSUEKEY]`
 
@@ -204,7 +204,7 @@ EXAMPLES
   $ jg find --json
 ```
 
-_See code: [src/commands/find/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.14/src/commands/find/index.ts)_
+_See code: [src/commands/find/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.15/src/commands/find/index.ts)_
 
 ## `jg help [COMMAND]`
 
@@ -255,7 +255,7 @@ EXAMPLES
   $ jg id --json
 ```
 
-_See code: [src/commands/id/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.14/src/commands/id/index.ts)_
+_See code: [src/commands/id/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.15/src/commands/id/index.ts)_
 
 ## `jg key`
 
@@ -286,7 +286,7 @@ EXAMPLES
   $ jg key --json
 ```
 
-_See code: [src/commands/key/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.14/src/commands/key/index.ts)_
+_See code: [src/commands/key/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.15/src/commands/key/index.ts)_
 
 ## `jg plugins`
 
@@ -610,7 +610,7 @@ EXAMPLES
   $ jg pr --json
 ```
 
-_See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.14/src/commands/pr/index.ts)_
+_See code: [src/commands/pr/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.15/src/commands/pr/index.ts)_
 
 ## `jg related [ISSUEKEY]`
 
@@ -638,7 +638,7 @@ EXAMPLES
   $ jg related
 ```
 
-_See code: [src/commands/related/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.14/src/commands/related/index.ts)_
+_See code: [src/commands/related/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.15/src/commands/related/index.ts)_
 
 ## `jg revisit [ISSUEKEY]`
 
@@ -666,7 +666,7 @@ EXAMPLES
   $ jg revisit
 ```
 
-_See code: [src/commands/revisit/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.14/src/commands/revisit/index.ts)_
+_See code: [src/commands/revisit/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.15/src/commands/revisit/index.ts)_
 
 ## `jg url [ISSUEKEY]`
 
@@ -701,5 +701,5 @@ EXAMPLES
   $ jg url --json
 ```
 
-_See code: [src/commands/url/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.14/src/commands/url/index.ts)_
+_See code: [src/commands/url/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.15/src/commands/url/index.ts)_
 <!-- commandsstop -->
