@@ -15,7 +15,7 @@ export default class Related extends JgCommand<typeof Related> {
   ]
 
   public async run(): Promise<{ related: string[] }> {
-    const related = await this.fetchRelatedIssues(this.jiraIssueKey)
+    const related = await this.fetchRelatedIssues(this.jiraIssueKey).then((data) => data.map((issue) => issue.url))
 
     this.log(related.join('\n'))
 

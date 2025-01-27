@@ -19,7 +19,7 @@ export default class Revisit extends JgCommand<typeof Revisit> {
     const related = await this.fetchRelatedIssues(this.jiraIssueKey)
 
     for (const pr of related) {
-      open(pr)
+      open(pr.url)
     }
   }
 }

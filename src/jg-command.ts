@@ -46,12 +46,33 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     clipboard.writeSync(data)
   }
 
+  // gh pr view 16594 --json files --jq '.files.[].path'
+  public async fetchChangedFiles(issueIdOrKey: string): Promise<string[]> {
+    const prs = await this.fetchRelatedIssues(issueIdOrKey)
+
+    if (!process.env.JG_GITHUB_OWNER || !process.env.JG_GITHUB_REPO) {
+      throw new Error('JG_GITHUB_OWNER or JG_GITHUB_REPO is not set')
+    }
+
+    const files = await Promise.all(prs.map(async (pr) => {
+      const changed = await GHClient.rest.pulls.listFiles({
+        owner: process.env.JG_GITHUB_OWNER as string,
+        // eslint-disable-next-line camelcase
+        pull_number: pr.number,
+        repo: process.env.JG_GITHUB_REPO as string,
+      })
+      return changed.data.map((file) => file.filename)
+    }))
+
+    return [...new Set(files.flat())]
+  }
+
   async fetchIssue(issueIdOrKey: string): Promise<Issue> {
     const issue = await JiraClient.issues.getIssue({ issueIdOrKey })
     return issue
   }
 
-  public async fetchRelatedIssues(issueIdOrKey: string): Promise<string[]> {
+  public async fetchRelatedIssues(issueIdOrKey: string): Promise<{ number: number, url: string }[]> {
     const openPRs = await GHClient.rest.search.issuesAndPullRequests({
       q: `type:pr is:open ${issueIdOrKey} assignee:@me`,
     })
@@ -64,13 +85,28 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
       return []
     }
 
-    return relatedPRs.map((pr) => pr.pull_request?.html_url as string)
+    return relatedPRs.map((pr) => ({ number: pr.number as number, url: pr.pull_request?.html_url as string }))
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected async finally(_: Error | undefined): Promise<any> {
     // called after run and catch regardless of whether or not the command errored
     return super.finally(_)
+  }
+
+  public async getChangedFilesForPR(prNumber: number): Promise<string[]> {
+    if (!process.env.JG_GITHUB_OWNER || !process.env.JG_GITHUB_REPO) {
+      throw new Error('JG_GITHUB_OWNER or JG_GITHUB_REPO is not set')
+    }
+
+    const files = await GHClient.rest.pulls.listFiles({
+      owner: process.env.JG_GITHUB_OWNER as string,
+      // eslint-disable-next-line camelcase
+      pull_number: prNumber,
+      repo: process.env.JG_GITHUB_REPO as string,
+    })
+
+    return files.data.map((file) => file.filename)
   }
 
   async getExtractedIssueData(issueKey: string): Promise<ExtractedIssueData> {
@@ -166,7 +202,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     if (this.flags.clipboard) {
       this.copyToClipboard(message)
       if (!this.flags.quiet) {
-        this.log(`Copied to clipboard: ${message}`)
+        this.log(`Copied to clipboard:\n${message}`)
       }
     } else {
       this.log(message)

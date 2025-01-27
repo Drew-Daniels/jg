@@ -56,6 +56,7 @@ USAGE
 <!-- commands -->
 * [`jg bname [ISSUEKEY]`](#jg-bname-issuekey)
 * [`jg cc [ISSUEKEY]`](#jg-cc-issuekey)
+* [`jg changed [ISSUEKEY]`](#jg-changed-issuekey)
 * [`jg find [ISSUEKEY]`](#jg-find-issuekey)
 * [`jg help [COMMAND]`](#jg-help-command)
 * [`jg id`](#jg-id)
@@ -142,6 +143,34 @@ EXAMPLES
 ```
 
 _See code: [src/commands/cc/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.14/src/commands/cc/index.ts)_
+
+## `jg changed [ISSUEKEY]`
+
+Lists changed files for a given Jira Issue
+
+```
+USAGE
+  $ jg changed [ISSUEKEY] [--json] [-h] [-q -c]
+
+ARGUMENTS
+  ISSUEKEY  Jira Issue Key
+
+FLAGS
+  -c, --clipboard  Copy to clipboard
+  -h, --help       Show help
+  -q, --quiet      Suppress output
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Lists changed files for a given Jira Issue
+
+EXAMPLES
+  $ jg changed
+```
+
+_See code: [src/commands/changed/index.ts](https://github.com/Drew-Daniels/jg/blob/v0.0.14/src/commands/changed/index.ts)_
 
 ## `jg find [ISSUEKEY]`
 
