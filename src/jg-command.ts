@@ -127,6 +127,7 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
     const summary = issueScopeAndSummary.slice(Math.max(0, lastScopeIndex + 1))
       .replaceAll(/^\s+/g, '')
       .replaceAll(/\s+$/g, '')
+      .replaceAll('"', '')
 
     const type = this.getIssueType(issue)
 
