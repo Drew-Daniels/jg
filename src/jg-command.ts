@@ -156,7 +156,14 @@ export abstract class JgCommand<T extends typeof Command> extends Command {
   public async getJiraIssueKeyFromArgsOrCurrentBranch(): Promise<string> {
     return new Promise((resolve) => {
       if (this.args.issueKey) {
-        resolve(this.args.issueKey)
+        let { issueKey } = this.args
+
+        // TODO: Add ability to configure custom prefixes
+        if (!issueKey.startsWith('EMR-')) {
+          issueKey = `EMR-${issueKey}`
+        }
+
+        resolve(issueKey)
       } else {
         this.getJiraIssueKeyFromCurrentBranch().then((jiraIssueKey) => {
           resolve(jiraIssueKey)
