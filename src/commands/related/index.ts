@@ -2,7 +2,6 @@ import { Args } from '@oclif/core'
 
 import { JgCommand } from '../../jg-command.js'
 
-// TODO: Fix flags - similar issue to 'revisit' command
 export default class Related extends JgCommand<typeof Related> {
   static override args = {
     issueKey: Args.string({ description: 'Jira Issue Key' }),
@@ -17,7 +16,7 @@ export default class Related extends JgCommand<typeof Related> {
   public async run(): Promise<{ related: string[] }> {
     const related = await this.fetchRelatedIssues(this.jiraIssueKey).then((data) => data.map((issue) => issue.url))
 
-    this.log(related.join('\n'))
+    this.handleLogging(related.join('\n'))
 
     return {
       related
